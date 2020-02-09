@@ -42,9 +42,10 @@ class MagneticField : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
     private var listener: OnFragmentInteractionListener? = null
     private var enableLog:Boolean = false
-    private var logData:String = ""
+    private var logStringBuilder:StringBuilder = StringBuilder()
     private var sEventListener: SensorEventListener? = null
 
     private lateinit var sensorManager:SensorManager
@@ -72,7 +73,7 @@ class MagneticField : Fragment() {
 
         if(savedInstanceState != null){
             enableLog = savedInstanceState.get("enableLog") as Boolean
-            logData =  savedInstanceState.get("logData") as String
+            logStringBuilder.append(savedInstanceState.get("logData") as String)
 
             if(enableLog){
                 view.card.floatingActionButton.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_pause_white_24dp))
@@ -84,7 +85,7 @@ class MagneticField : Fragment() {
             enableLog = !enableLog
             if(enableLog){
                 view.card.floatingActionButton.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_pause_white_24dp))
-                logData = "timestamp,x,y,z,${mSensor.name},Vendor:${mSensor.vendor},Version:${mSensor.version},Power:${mSensor.power},MaxDelay:${mSensor.maxDelay},MinDelay:${mSensor.minDelay},MaxRange:${mSensor.maximumRange}"
+                logStringBuilder.append("timestamp,x,y,z,${mSensor.name},Vendor:${mSensor.vendor},Version:${mSensor.version},Power:${mSensor.power},MaxDelay:${mSensor.maxDelay},MinDelay:${mSensor.minDelay},MaxRange:${mSensor.maximumRange}")
                 Snackbar.make(view, getString(R.string.startRecording), Snackbar.LENGTH_LONG).show()
             } else if(!enableLog){
                 view.card.floatingActionButton.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_play_arrow_white_24dp))
@@ -131,22 +132,23 @@ class MagneticField : Fragment() {
             view.card_v3.text = String.format("%.2f", it.values[2]) + " $str"
 
             if(enableLog){
-                logData += "\n${it.timestamp},${it.values[0]},${it.values[1]},${it.values[2]}"
+                logStringBuilder.append("\n${it.timestamp},${it.values[0]},${it.values[1]},${it.values[2]}")
             }
             SensorSingleton.addPointsToChart(i, mData, mChart, it.values)
             i++
         }
     }
 
-    override fun onActivityResult(request:Int, result:Int, resultData: Intent?){
+    override fun onActivityResult(request:Int, result:Int, resultData:Intent?){
         if(resultData != null && resultData.data != null){
             val fUri = resultData.data!!
             val pfd: ParcelFileDescriptor = activity!!.applicationContext.contentResolver.openFileDescriptor(fUri, "w")!!
             val outStream = FileOutputStream(pfd.fileDescriptor)
-            outStream.write(logData.toByteArray())
+
+            outStream.write(logStringBuilder.toString().toByteArray())
             outStream.close()
-            logData = ""
         }
+        logStringBuilder.clear()
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -167,7 +169,7 @@ class MagneticField : Fragment() {
         super.onSaveInstanceState(outState)
 
         outState.putBoolean("enableLog", enableLog)
-        outState.putString("logData", logData)
+        outState.putString("logData", logStringBuilder.toString())
     }
 
     override fun onDestroyView() {
