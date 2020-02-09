@@ -65,7 +65,7 @@ class MagneticField : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var view = inflater.inflate(R.layout.fragment_magnetic_field, container, false)
+        val view = inflater.inflate(R.layout.fragment_magnetic_field, container, false)
 
         sensorManager = context!!.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         mSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)

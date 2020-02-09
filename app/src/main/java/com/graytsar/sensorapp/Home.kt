@@ -15,13 +15,15 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.sensor_view_card.view.*
-import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.LinkedHashMap
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -41,7 +43,7 @@ class Home : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
-    private var listSensorEventListener:LinkedList<SensorEventListener>? = null
+
     private val typeList:IntArray = intArrayOf(
         Sensor.TYPE_ACCELEROMETER, Sensor.TYPE_MAGNETIC_FIELD,
         Sensor.TYPE_GRAVITY, Sensor.TYPE_GYROSCOPE, Sensor.TYPE_LINEAR_ACCELERATION,
@@ -50,11 +52,10 @@ class Home : Fragment() {
         Sensor.TYPE_PROXIMITY , Sensor.TYPE_STEP_COUNTER
     )
 
+    private lateinit var arListSensorEventListener:ArrayList<SensorEventListener>
     private lateinit var sensorManager:SensorManager
     private lateinit var linearLayout: LinearLayout
-    private lateinit var listSensor:LinkedList<Sensor>
-    private lateinit var listCard:LinkedList<View>
-
+    private lateinit var mapSensorView:LinkedHashMap<Sensor, View>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,8 +63,6 @@ class Home : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-
-
     }
 
     override fun onCreateView(
@@ -73,10 +72,8 @@ class Home : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         linearLayout = view.linear_layout_sensor_card_list
-
         sensorManager = context!!.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         initLayout()
-
 
         MobileAds.initialize(this.context)
         val mAdView = view.findViewById<AdView>(R.id.adView)
@@ -88,18 +85,17 @@ class Home : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        listSensorEventListener = registerAll()
+        registerAll()
     }
 
     private fun initLayout(){
-        listSensor= LinkedList()
-        listCard = LinkedList()
+        mapSensorView = LinkedHashMap()
 
         typeList.forEach{
             val card:View = layoutInflater.inflate(R.layout.sensor_view_card, null)
             val mSensor = sensorManager.getDefaultSensor(it)
-            val navController = findNavController(this)
+            val f = activity!!.supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+            val navController: NavController = f.navController //for fragment switch
 
             if(mSensor != null){
                 when (mSensor.type) {
@@ -110,12 +106,10 @@ class Home : Fragment() {
                         linearLayout.addView(card)
 
                         card.setOnClickListener {
-                            //Log.d("DBG: ", it.card_title.text.toString())
                             navController.navigate(R.id.accelerometer)
                         }
 
-                        listSensor.add(mSensor)
-                        listCard.add(card)
+                        mapSensorView[mSensor] = card
                     }
                     Sensor.TYPE_MAGNETIC_FIELD -> {
                         card.card_title.text = getString(R.string.sensorMagneticField)
@@ -124,12 +118,10 @@ class Home : Fragment() {
                         linearLayout.addView(card)
 
                         card.setOnClickListener {
-                            //Log.d("DBG: ", it.card_title.text.toString())
                             navController.navigate(R.id.magneticField)
                         }
 
-                        listSensor.add(mSensor)
-                        listCard.add(card)
+                        mapSensorView[mSensor] = card
                     }
                     Sensor.TYPE_GRAVITY -> {
                         card.card_title.text = getString(R.string.sensorGravity)
@@ -138,12 +130,10 @@ class Home : Fragment() {
                         linearLayout.addView(card)
 
                         card.setOnClickListener {
-                            //Log.d("DBG: ", it.card_title.text.toString())
                             navController.navigate(R.id.gravity)
                         }
 
-                        listSensor.add(mSensor)
-                        listCard.add(card)
+                        mapSensorView[mSensor] = card
                     }
                     Sensor.TYPE_GYROSCOPE -> {
                         card.card_title.text = getString(R.string.sensorGyroscope)
@@ -152,12 +142,10 @@ class Home : Fragment() {
                         linearLayout.addView(card)
 
                         card.setOnClickListener {
-                            //Log.d("DBG: ", it.card_title.text.toString())
                             navController.navigate(R.id.gyroscope)
                         }
 
-                        listSensor.add(mSensor)
-                        listCard.add(card)
+                        mapSensorView[mSensor] = card
                     }
                     Sensor.TYPE_LINEAR_ACCELERATION -> {
                         card.card_title.text = getString(R.string.sensorLinearAcceleration)
@@ -166,12 +154,10 @@ class Home : Fragment() {
                         linearLayout.addView(card)
 
                         card.setOnClickListener {
-                            //Log.d("DBG: ", it.card_title.text.toString())
                             navController.navigate(R.id.linearAcceleration)
                         }
 
-                        listSensor.add(mSensor)
-                        listCard.add(card)
+                        mapSensorView[mSensor] = card
                     }
                     Sensor.TYPE_AMBIENT_TEMPERATURE -> {
                         card.card_title.text = getString(R.string.sensorAmbientTemperature)
@@ -183,12 +169,10 @@ class Home : Fragment() {
                         card.card_v3.visibility = TextView.GONE
 
                         card.setOnClickListener {
-                            //Log.d("DBG: ", it.card_title.text.toString())
                             navController.navigate(R.id.ambient_Temperature)
                         }
 
-                        listSensor.add(mSensor)
-                        listCard.add(card)
+                        mapSensorView[mSensor] = card
                     }
                     Sensor.TYPE_LIGHT -> {
                         card.card_title.text = getString(R.string.sensorLight)
@@ -200,12 +184,10 @@ class Home : Fragment() {
                         card.card_v3.visibility = TextView.GONE
 
                         card.setOnClickListener {
-                            //Log.d("DBG: ", it.card_title.text.toString())
                             navController.navigate(R.id.light)
                         }
 
-                        listSensor.add(mSensor)
-                        listCard.add(card)
+                        mapSensorView[mSensor] = card
                     }
                     Sensor.TYPE_PRESSURE -> {
                         card.card_title.text = getString(R.string.sensorPressure)
@@ -217,12 +199,10 @@ class Home : Fragment() {
                         card.card_v3.visibility = TextView.GONE
 
                         card.setOnClickListener {
-                            //Log.d("DBG: ", it.card_title.text.toString())
                             navController.navigate(R.id.pressure)
                         }
 
-                        listSensor.add(mSensor)
-                        listCard.add(card)
+                        mapSensorView[mSensor] = card
                     }
                     Sensor.TYPE_RELATIVE_HUMIDITY -> {
                         card.card_title.text = getString(R.string.sensorRelativeHumidity)
@@ -234,12 +214,10 @@ class Home : Fragment() {
                         card.card_v3.visibility = TextView.GONE
 
                         card.setOnClickListener {
-                            //Log.d("DBG: ", it.card_title.text.toString())
                             navController.navigate(R.id.relativeHumidity)
                         }
 
-                        listSensor.add(mSensor)
-                        listCard.add(card)
+                        mapSensorView[mSensor] = card
                     }
                     Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR -> {
                         card.card_title.text = getString(R.string.sensorGeomagneticRotationVector)
@@ -248,12 +226,10 @@ class Home : Fragment() {
                         linearLayout.addView(card)
 
                         card.setOnClickListener {
-                            //Log.d("DBG: ", it.card_title.text.toString())
                             navController.navigate(R.id.geomagneticRotationVector)
                         }
 
-                        listSensor.add(mSensor)
-                        listCard.add(card)
+                        mapSensorView[mSensor] = card
                     }
                     Sensor.TYPE_PROXIMITY -> {
                         card.card_title.text = getString(R.string.sensorProximity)
@@ -264,12 +240,10 @@ class Home : Fragment() {
                         linearLayout.addView(card)
 
                         card.setOnClickListener {
-                            //Log.d("DBG: ", it.card_title.text.toString())
                             navController.navigate(R.id.proximity)
                         }
 
-                        listSensor.add(mSensor)
-                        listCard.add(card)
+                        mapSensorView[mSensor] = card
                     }
                     Sensor.TYPE_STEP_COUNTER -> {
                         card.card_title.text = getString(R.string.sensorStepCounter)
@@ -281,12 +255,10 @@ class Home : Fragment() {
                         linearLayout.addView(card)
 
                         card.setOnClickListener {
-                            //Log.d("DBG: ", it.card_title.text.toString())
                             navController.navigate(R.id.stepCounter)
                         }
 
-                        listSensor.add(mSensor)
-                        listCard.add(card)
+                        mapSensorView[mSensor] = card
                     }
                 }
             }
@@ -294,102 +266,85 @@ class Home : Fragment() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun registerAll(): LinkedList<SensorEventListener>{
-        val list: LinkedList<SensorEventListener> = LinkedList()
+    private fun registerAll() {
+        arListSensorEventListener = ArrayList()
 
-        for(i in 0 until listSensor.count()){
-            val mSensor = listSensor[i]
-            val mCard = listCard[i]
-
-            when (mSensor.type) {
+        mapSensorView.forEach {itMap ->
+            when(itMap.key.type){
                 Sensor.TYPE_ACCELEROMETER -> {
-                    val o = SensorSingleton.registerSelected(sensorManager, mSensor) {
-                        mCard.card_v1.text = String.format("%.2f", it.values[0]) + " m/s²"
-                        mCard.card_v2.text = String.format("%.2f", it.values[1]) + " m/s²"
-                        mCard.card_v3.text = String.format("%.2f", it.values[2]) + " m/s²"
-                    }
-                    list.add(o)
+                    arListSensorEventListener.add(SensorSingleton.registerSelected(sensorManager, itMap.key) {
+                        itMap.value.card_v1.text = String.format("%.2f", it.values[0]) + " ${getString(R.string.unitAcceleration)}"
+                        itMap.value.card_v2.text = String.format("%.2f", it.values[1]) + " ${getString(R.string.unitAcceleration)}"
+                        itMap.value.card_v3.text = String.format("%.2f", it.values[2]) + " ${getString(R.string.unitAcceleration)}"
+                    })
                 }
                 Sensor.TYPE_MAGNETIC_FIELD -> {
-                    val o = SensorSingleton.registerSelected(sensorManager, mSensor) {
-                        mCard.card_v1.text = String.format("%.2f", it.values[0]) + " µT"
-                        mCard.card_v2.text = String.format("%.2f", it.values[1]) + " µT"
-                        mCard.card_v3.text = String.format("%.2f", it.values[2]) + " µT"
-                    }
-                    list.add(o)
+                    arListSensorEventListener.add(SensorSingleton.registerSelected(sensorManager, itMap.key) {
+                        itMap.value.card_v1.text = String.format("%.2f", it.values[0]) + " ${getString(R.string.unitMagneticField)}"
+                        itMap.value.card_v2.text = String.format("%.2f", it.values[1]) + " ${getString(R.string.unitMagneticField)}"
+                        itMap.value.card_v3.text = String.format("%.2f", it.values[2]) + " ${getString(R.string.unitMagneticField)}"
+                    })
                 }
                 Sensor.TYPE_GRAVITY -> {
-                    val o = SensorSingleton.registerSelected(sensorManager, mSensor) {
-                        mCard.card_v1.text = String.format("%.2f", it.values[0]) + " m/s²"
-                        mCard.card_v2.text = String.format("%.2f", it.values[1]) + " m/s²"
-                        mCard.card_v3.text = String.format("%.2f", it.values[2]) + " m/s²"
-                    }
-                    list.add(o)
+                    arListSensorEventListener.add(SensorSingleton.registerSelected(sensorManager, itMap.key) {
+                        itMap.value.card_v1.text = String.format("%.2f", it.values[0]) + " ${getString(R.string.unitAcceleration)}"
+                        itMap.value.card_v2.text = String.format("%.2f", it.values[1]) + " ${getString(R.string.unitAcceleration)}"
+                        itMap.value.card_v3.text = String.format("%.2f", it.values[2]) + " ${getString(R.string.unitAcceleration)}"
+                    })
                 }
                 Sensor.TYPE_GYROSCOPE -> {
-                    val o = SensorSingleton.registerSelected(sensorManager, mSensor) {
-                        mCard.card_v1.text = String.format("%.2f", it.values[0]) + " rad/sec"
-                        mCard.card_v2.text = String.format("%.2f", it.values[1]) + " rad/sec"
-                        mCard.card_v3.text = String.format("%.2f", it.values[2]) + " rad/sec"
-                    }
-                    list.add(o)
+                    arListSensorEventListener.add(SensorSingleton.registerSelected(sensorManager, itMap.key) {
+                        itMap.value.card_v1.text = String.format("%.2f", it.values[0]) + " ${getString(R.string.unitRadiantSecond)}"
+                        itMap.value.card_v2.text = String.format("%.2f", it.values[1]) + " ${getString(R.string.unitRadiantSecond)}"
+                        itMap.value.card_v3.text = String.format("%.2f", it.values[2]) + " ${getString(R.string.unitRadiantSecond)}"
+                    })
                 }
                 Sensor.TYPE_LINEAR_ACCELERATION -> {
-                    val o = SensorSingleton.registerSelected(sensorManager, mSensor) {
-                        mCard.card_v1.text = String.format("%.2f", it.values[0]) + " m/s²"
-                        mCard.card_v2.text = String.format("%.2f", it.values[1]) + " m/s²"
-                        mCard.card_v3.text = String.format("%.2f", it.values[2]) + " m/s²"
-                    }
-                    list.add(o)
+                    arListSensorEventListener.add(SensorSingleton.registerSelected(sensorManager, itMap.key) {
+                        itMap.value.card_v1.text = String.format("%.2f", it.values[0]) + " ${getString(R.string.unitAcceleration)}"
+                        itMap.value.card_v2.text = String.format("%.2f", it.values[1]) + " ${getString(R.string.unitAcceleration)}"
+                        itMap.value.card_v3.text = String.format("%.2f", it.values[2]) + " ${getString(R.string.unitAcceleration)}"
+                    })
                 }
                 Sensor.TYPE_AMBIENT_TEMPERATURE -> {
-                    val o = SensorSingleton.registerSelected(sensorManager, mSensor) {
-                        mCard.card_v1.text = String.format("%.2f", it.values[0]) + " C°"
-                    }
-                    list.add(o)
+                    arListSensorEventListener.add(SensorSingleton.registerSelected(sensorManager, itMap.key) {
+                        itMap.value.card_v1.text = String.format("%.2f", it.values[0]) + " ${getString(R.string.unitTemperature)}"
+                    })
                 }
                 Sensor.TYPE_LIGHT -> {
-                    val o = SensorSingleton.registerSelected(sensorManager, mSensor) {
-                        mCard.card_v1.text = String.format("%.2f", it.values[0]) + " lux"
-                    }
-                    list.add(o)
+                    arListSensorEventListener.add(SensorSingleton.registerSelected(sensorManager, itMap.key) {
+                        itMap.value.card_v1.text = String.format("%.2f", it.values[0]) + " ${getString(R.string.unitLight)}"
+                    })
                 }
                 Sensor.TYPE_PRESSURE -> {
-                    val o = SensorSingleton.registerSelected(sensorManager, mSensor) {
-                        mCard.card_v1.text = String.format("%.2f", it.values[0]) + " hPa"
-                    }
-                    list.add(o)
+                    arListSensorEventListener.add(SensorSingleton.registerSelected(sensorManager, itMap.key) {
+                        itMap.value.card_v1.text = String.format("%.2f", it.values[0]) + " ${getString(R.string.unitPressure)}"
+                    })
                 }
                 Sensor.TYPE_RELATIVE_HUMIDITY -> {
-                    val o = SensorSingleton.registerSelected(sensorManager, mSensor) {
-                        mCard.card_v1.text = String.format("%.2f", it.values[0]) + " %"
-                    }
-                    list.add(o)
+                    arListSensorEventListener.add(SensorSingleton.registerSelected(sensorManager, itMap.key) {
+                        itMap.value.card_v1.text = String.format("%.2f", it.values[0]) + " ${getString(R.string.unitPercent)}"
+                    })
                 }
                 Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR -> {
-                    val o = SensorSingleton.registerSelected(sensorManager, mSensor) {
-                        mCard.card_v1.text = String.format("%.2f", it.values[0])
-                        mCard.card_v2.text = String.format("%.2f", it.values[1])
-                        mCard.card_v3.text = String.format("%.2f", it.values[2])
-                    }
-                    list.add(o)
+                    arListSensorEventListener.add(SensorSingleton.registerSelected(sensorManager, itMap.key) {
+                        itMap.value.card_v1.text = String.format("%.2f", it.values[0])
+                        itMap.value.card_v2.text = String.format("%.2f", it.values[1])
+                        itMap.value.card_v3.text = String.format("%.2f", it.values[2])
+                    })
                 }
                 Sensor.TYPE_PROXIMITY -> {
-                    val o = SensorSingleton.registerSelected(sensorManager, mSensor) {
-                        mCard.card_v1.text = String.format("%.2f", it.values[0]) + " cm"
-                    }
-                    list.add(o)
+                    arListSensorEventListener.add(SensorSingleton.registerSelected(sensorManager, itMap.key) {
+                        itMap.value.card_v1.text = String.format("%.2f", it.values[0]) + " ${getString(R.string.unitProximity)}"
+                    })
                 }
                 Sensor.TYPE_STEP_COUNTER -> {
-                    val o = SensorSingleton.registerSelected(sensorManager, mSensor) {
-                        mCard.card_v1.text = String.format("%.2f", it.values[0])
-                    }
-                    list.add(o)
+                    arListSensorEventListener.add(SensorSingleton.registerSelected(sensorManager, itMap.key) {
+                        itMap.value.card_v1.text = String.format("%.2f", it.values[0]) + " ${getString(R.string.unitSteps)}"
+                    })
                 }
-
             }
         }
-        return list
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -409,11 +364,10 @@ class Home : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
 
-        if(listSensorEventListener != null){
-            for (sensorEventListener in listSensorEventListener!!) {
-                sensorManager.unregisterListener(sensorEventListener)
-            }
+        for (sensorEventListener in arListSensorEventListener) {
+            sensorManager.unregisterListener(sensorEventListener)
         }
+
     }
 
     override fun onDetach() {

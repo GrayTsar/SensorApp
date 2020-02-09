@@ -12,7 +12,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -23,7 +23,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, NavController.OnDestinationChangedListener {
-
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +34,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val drawerLayout:DrawerLayout = findViewById(R.id.drawer_layout)
         val navigationView:NavigationView = findViewById(R.id.navigation_view)
-        val navController:NavController = findNavController(R.id.nav_host_fragment) //for fragment switch
+
+        val f = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController:NavController = f.navController //for fragment switch
+
+
 
         //hamburger and back arrow icon functionality
         appBarConfiguration = AppBarConfiguration(
@@ -51,12 +54,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment)
+        val f = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController:NavController = f.navController //for fragment switch
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment)
+        val f = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController:NavController = f.navController //for fragment switch
         val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
         when(p0.itemId){
@@ -64,24 +69,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 navController.navigate(p0.itemId)
             }
             R.id.accelerometer ->{
-                //navController.navigate(p0.itemId)
                 if(sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) //if sensor is available then navigate to detail fragment
-                    navController.navigate(R.id.action_home_to_accelerometer)
+                    navController.navigate(p0.itemId)
                 else
                     Snackbar.make(drawer_layout, p0.title.toString() + " ${getString(R.string.missingSensorBottomBar)}", Snackbar.LENGTH_LONG).show() //else show error message
             }
             R.id.magneticField ->{
                 if(sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD) != null){
-                    //navController.navigate(p0.itemId)
-                    navController.navigate(R.id.action_home_to_magneticField)
+                    navController.navigate(p0.itemId)
                 }
                 else
                     Snackbar.make(drawer_layout, p0.title.toString() + " ${getString(R.string.missingSensorBottomBar)}", Snackbar.LENGTH_LONG).show()
             }
             R.id.gravity ->{
                 if(sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY) != null){
-                    //navController.navigate(p0.itemId)
-                    navController.navigate(R.id.action_home_to_gravity)
+                    navController.navigate(p0.itemId)
                 }
                 else
                     Snackbar.make(drawer_layout, p0.title.toString() + " ${getString(R.string.missingSensorBottomBar)}", Snackbar.LENGTH_LONG).show()

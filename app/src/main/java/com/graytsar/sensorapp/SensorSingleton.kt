@@ -57,11 +57,6 @@ object SensorSingleton: ViewModel() {
     fun addPointsToChart(position:Int, mData: LineData, mChart: LineChart, valueAr:FloatArray, safety:Boolean = false){
         var i = 0 //axis index
 
-        /*Log.d("DBG-ERR: ", "Size: ${valueAr.size.toString()}")
-        valueAr.forEach {
-            Log.d("DBG-ERR: ", "$it")
-        }*/
-
         if(!safety){
             for(c in 0 until 3) { //xiaomi mi a3 uses uncalibrated version of default magnet sensor -> 5 values for uncalibrated
                 val entry = Entry(position.toFloat(), valueAr[i])

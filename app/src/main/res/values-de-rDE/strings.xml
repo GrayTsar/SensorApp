@@ -35,6 +35,7 @@
     <string name="unitMicroseconds">µs</string>
     <string name="unitTemperature">°C</string>
     <string name="unitProximity">cm</string>
+    <string name="unitPercent">%</string>
 
     <string name="missingSensorBottomBar">nicht vorhanden</string>
     <string name="startRecording">Aufzeichnung gestartet</string>
