@@ -7,7 +7,7 @@
     <string name="sensorMagneticField">Magnetometer</string>
     <string name="sensorGravity">Gravitation</string>
     <string name="sensorGyroscope">Gyroskop</string>
-    <string name="sensorLinearAcceleration">Linearer Beschleunigungssensor</string>
+    <string name="sensorLinearAcceleration">Lineare Beschleunigung</string>
     <string name="sensorAmbientTemperature">Temperatur</string>
     <string name="sensorLight">Licht</string>
     <string name="sensorPressure">Luftdruck</string>

@@ -43,6 +43,7 @@ class Accelerometer : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
     private var listener: OnFragmentInteractionListener? = null
     private var enableLog:Boolean = false
     private var logData:String = ""
@@ -66,34 +67,43 @@ class Accelerometer : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        val view = inflater.inflate(R.layout.fragment_acceleration, container, false)
+
         sensorManager = context!!.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         mSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-        val v = inflater.inflate(R.layout.fragment_acceleration, container, false)
 
-        v.card.imageView.setImageDrawable(ContextCompat.getDrawable(v.context, R.drawable.ic_acceleration_white))
+        if(savedInstanceState != null){
+            enableLog = savedInstanceState.get("enableLog") as Boolean
+            logData =  savedInstanceState.get("logData") as String
+
+            if(enableLog){
+                view.card.floatingActionButton.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_pause_white_24dp))
+            }
+        }
+
+        view.card.imageView.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_acceleration_white))
         activity!!.toolbar.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.colorRed, null))
-        v.card.backView.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.colorRed, null))
-        v.card.card_title.visibility = TextView.GONE
+        view.card.backView.setBackgroundColor(ResourcesCompat.getColor(resources, R.color.colorRed, null))
+        view.card.card_title.visibility = TextView.GONE
         //view.card.card_title.text = getString(R.string.sensorAccelerometer)
-        v.detail.sensor_text_name.text = "${getString(R.string.labelName)} ${mSensor.name}"
-        v.detail.sensor_text_vendor.text = "${getString(R.string.labelVendor)} ${mSensor.vendor}"
-        v.detail.sensor_text_version.text = "${getString(R.string.labelVersion)} ${mSensor.version}"
-        v.detail.sensor_text_power.text = "${getString(R.string.labelPower)} ${mSensor.power} ${getString(R.string.unitAmpere)}"
-        v.detail.sensor_text_max_delay.text = "${getString(R.string.labelMaxDelay)} ${mSensor.maxDelay} ${getString(R.string.unitMicroseconds)}"
-        v.detail.sensor_text_min_delay.text = "${getString(R.string.labelMinDelay)} ${mSensor.minDelay} ${getString(R.string.unitMicroseconds)}"
-        v.detail.sensor_text_max_range.text = "${getString(R.string.labelMaxRange)} ${mSensor.maximumRange} ${getString(R.string.unitAcceleration)}"
-        v.detail.sensor_text_information.text = getString(R.string.infoAccelerometer)
+        view.detail.sensor_text_name.text = "${getString(R.string.labelName)} ${mSensor.name}"
+        view.detail.sensor_text_vendor.text = "${getString(R.string.labelVendor)} ${mSensor.vendor}"
+        view.detail.sensor_text_version.text = "${getString(R.string.labelVersion)} ${mSensor.version}"
+        view.detail.sensor_text_power.text = "${getString(R.string.labelPower)} ${mSensor.power} ${getString(R.string.unitAmpere)}"
+        view.detail.sensor_text_max_delay.text = "${getString(R.string.labelMaxDelay)} ${mSensor.maxDelay} ${getString(R.string.unitMicroseconds)}"
+        view.detail.sensor_text_min_delay.text = "${getString(R.string.labelMinDelay)} ${mSensor.minDelay} ${getString(R.string.unitMicroseconds)}"
+        view.detail.sensor_text_max_range.text = "${getString(R.string.labelMaxRange)} ${mSensor.maximumRange} ${getString(R.string.unitAcceleration)}"
+        view.detail.sensor_text_information.text = getString(R.string.infoAccelerometer)
 
-        v.card.floatingActionButton.show()
-        v.card.floatingActionButton.setOnClickListener {
+        view.card.floatingActionButton.show()
+        view.card.floatingActionButton.setOnClickListener {
             enableLog = !enableLog
             if(enableLog){
-                v.card.floatingActionButton.setImageDrawable(ContextCompat.getDrawable(v.context, R.drawable.ic_pause_white_24dp))
+                view.card.floatingActionButton.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_pause_white_24dp))
                 logData = "timestamp,x,y,z,${mSensor.name},Vendor:${mSensor.vendor},Version:${mSensor.version},Power:${mSensor.power},MaxDelay:${mSensor.maxDelay},MinDelay:${mSensor.minDelay},MaxRange:${mSensor.maximumRange}"
-                Snackbar.make(v, getString(R.string.startRecording), Snackbar.LENGTH_LONG).show()
+                Snackbar.make(view, getString(R.string.startRecording), Snackbar.LENGTH_LONG).show()
             } else if(!enableLog){
-                v.card.floatingActionButton.setImageDrawable(ContextCompat.getDrawable(v.context, R.drawable.ic_play_arrow_white_24dp))
+                view.card.floatingActionButton.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_play_arrow_white_24dp))
 
                 val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
                 intent.addCategory(Intent.CATEGORY_OPENABLE)
@@ -104,10 +114,10 @@ class Accelerometer : Fragment() {
         }
 
         mData = LineData()
-        mChart = v.chart
+        mChart = view.chart
         SensorSingleton.setupChart(3, mData, mChart)
 
-        return v
+        return view
     }
 
     override fun onActivityResult(request:Int, result:Int, resultData:Intent?){
@@ -154,6 +164,13 @@ class Accelerometer : Fragment() {
             throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
         }
     }*/
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putBoolean("enableLog", enableLog)
+        outState.putString("logData", logData)
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

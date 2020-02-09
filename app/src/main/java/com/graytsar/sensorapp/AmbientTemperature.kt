@@ -65,11 +65,19 @@ class AmbientTemperature : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_ambient_temperature, container, false)
 
         sensorManager = context!!.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         mSensor = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)
+
+        if(savedInstanceState != null){
+            enableLog = savedInstanceState.get("enableLog") as Boolean
+            logData =  savedInstanceState.get("logData") as String
+
+            if(enableLog){
+                view.card.floatingActionButton.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_pause_white_24dp))
+            }
+        }
 
         view.card.floatingActionButton.show()
         view.card.floatingActionButton.setOnClickListener {
@@ -154,6 +162,13 @@ class AmbientTemperature : Fragment() {
             throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
         }
     }*/
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putBoolean("enableLog", enableLog)
+        outState.putString("logData", logData)
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

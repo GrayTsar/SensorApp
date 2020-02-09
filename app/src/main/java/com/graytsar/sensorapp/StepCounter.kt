@@ -70,6 +70,15 @@ class StepCounter : Fragment() {
         sensorManager = context!!.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         mSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
 
+        if(savedInstanceState != null){
+            enableLog = savedInstanceState.get("enableLog") as Boolean
+            logData =  savedInstanceState.get("logData") as String
+
+            if(enableLog){
+                view.card.floatingActionButton.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_pause_white_24dp))
+            }
+        }
+
         view.card.floatingActionButton.show()
         view.card.floatingActionButton.setOnClickListener {
             enableLog = !enableLog
@@ -153,6 +162,13 @@ class StepCounter : Fragment() {
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putBoolean("enableLog", enableLog)
+        outState.putString("logData", logData)
     }
 
     override fun onDestroyView() {
