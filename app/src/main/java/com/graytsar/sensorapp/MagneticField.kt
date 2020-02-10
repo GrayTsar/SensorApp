@@ -9,6 +9,7 @@ import android.hardware.SensorManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.ParcelFileDescriptor
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_acceleration.view.*
 import kotlinx.android.synthetic.main.sensor_details.view.*
 import kotlinx.android.synthetic.main.sensor_view_card.view.*
 import kotlinx.android.synthetic.main.toolbar.*
-import java.io.FileOutputStream
+import java.io.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -45,7 +46,7 @@ class MagneticField : Fragment() {
 
     private var listener: OnFragmentInteractionListener? = null
     private var enableLog:Boolean = false
-    private var logStringBuilder:StringBuilder = StringBuilder()
+    private var csvHeader:String = ""
     private var sEventListener: SensorEventListener? = null
 
     private lateinit var sensorManager:SensorManager
@@ -73,7 +74,6 @@ class MagneticField : Fragment() {
 
         if(savedInstanceState != null){
             enableLog = savedInstanceState.get("enableLog") as Boolean
-            logStringBuilder.append(savedInstanceState.get("logData") as String)
 
             if(enableLog){
                 view.card.floatingActionButton.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_pause_white_24dp))
@@ -85,7 +85,7 @@ class MagneticField : Fragment() {
             enableLog = !enableLog
             if(enableLog){
                 view.card.floatingActionButton.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_pause_white_24dp))
-                logStringBuilder.append("timestamp,x,y,z,${mSensor.name},Vendor:${mSensor.vendor},Version:${mSensor.version},Power:${mSensor.power},MaxDelay:${mSensor.maxDelay},MinDelay:${mSensor.minDelay},MaxRange:${mSensor.maximumRange}")
+                csvHeader = "timestamp,x,y,z,${mSensor.name},Vendor:${mSensor.vendor},Version:${mSensor.version},Power:${mSensor.power},MaxDelay:${mSensor.maxDelay},MinDelay:${mSensor.minDelay},MaxRange:${mSensor.maximumRange}"
                 Snackbar.make(view, getString(R.string.startRecording), Snackbar.LENGTH_LONG).show()
             } else if(!enableLog){
                 view.card.floatingActionButton.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_play_arrow_white_24dp))
@@ -124,6 +124,14 @@ class MagneticField : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val appSpecificDir = File(activity!!.filesDir, "intern")
+        if(!appSpecificDir.mkdir()){
+            //Log.d("DBG: ", "mkDir returned false. Dir exists?: " + appSpecificDir.exists())
+        }
+        val mFile = File(appSpecificDir, "tempFile.csv")
+        val bW = BufferedWriter(FileWriter(mFile, true))
+
+
         var i = 0
         sEventListener = SensorSingleton.registerSelected(sensorManager, mSensor) {
             val str:String = getString(R.string.unitMagneticField)
@@ -132,7 +140,8 @@ class MagneticField : Fragment() {
             view.card_v3.text = String.format("%.2f", it.values[2]) + " $str"
 
             if(enableLog){
-                logStringBuilder.append("\n${it.timestamp},${it.values[0]},${it.values[1]},${it.values[2]}")
+                bW.append("\n${it.timestamp},${it.values[0]},${it.values[1]},${it.values[2]}" as CharSequence)
+                bW.flush()
             }
             SensorSingleton.addPointsToChart(i, mData, mChart, it.values)
             i++
@@ -145,10 +154,21 @@ class MagneticField : Fragment() {
             val pfd: ParcelFileDescriptor = activity!!.applicationContext.contentResolver.openFileDescriptor(fUri, "w")!!
             val outStream = FileOutputStream(pfd.fileDescriptor)
 
-            outStream.write(logStringBuilder.toString().toByteArray())
+            val appSpecificDir = File(activity!!.filesDir, "intern")
+            val mFile = File(appSpecificDir, "tempFile.csv")
+            val bR = BufferedReader(FileReader(mFile))
+
+            outStream.write(csvHeader.toByteArray())
+
+            val newLine = "\n".toByteArray()
+            bR.forEachLine {
+                outStream.write(it.toByteArray())
+                outStream.write(newLine)
+                outStream.flush()
+            }
             outStream.close()
+            mFile.delete()
         }
-        logStringBuilder.clear()
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -169,7 +189,6 @@ class MagneticField : Fragment() {
         super.onSaveInstanceState(outState)
 
         outState.putBoolean("enableLog", enableLog)
-        outState.putString("logData", logStringBuilder.toString())
     }
 
     override fun onDestroyView() {

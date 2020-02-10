@@ -9,6 +9,7 @@ import android.hardware.SensorManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.ParcelFileDescriptor
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_acceleration.view.*
 import kotlinx.android.synthetic.main.sensor_details.view.*
 import kotlinx.android.synthetic.main.sensor_view_card.view.*
 import kotlinx.android.synthetic.main.toolbar.*
-import java.io.FileOutputStream
+import java.io.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -47,7 +48,7 @@ class Accelerometer : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
     private var enableLog:Boolean = false
     private var sEventListener: SensorEventListener? = null
-    private var logStringBuilder:StringBuilder = StringBuilder()
+    private var csvHeader:String = ""
 
     private lateinit var sensorManager:SensorManager
     private lateinit var mSensor:Sensor
@@ -74,7 +75,6 @@ class Accelerometer : Fragment() {
 
         if(savedInstanceState != null){
             enableLog = savedInstanceState.get("enableLog") as Boolean
-            logStringBuilder.append(savedInstanceState.get("logData") as String)
 
             if(enableLog){
                 view.card.floatingActionButton.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_pause_white_24dp))
@@ -101,7 +101,7 @@ class Accelerometer : Fragment() {
             if(enableLog){
                 view.card.floatingActionButton.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_pause_white_24dp))
 
-                logStringBuilder.append("timestamp,x,y,z,${mSensor.name},Vendor:${mSensor.vendor},Version:${mSensor.version},Power:${mSensor.power},MaxDelay:${mSensor.maxDelay},MinDelay:${mSensor.minDelay},MaxRange:${mSensor.maximumRange}")
+                csvHeader = "timestamp,x,y,z,${mSensor.name},Vendor:${mSensor.vendor},Version:${mSensor.version},Power:${mSensor.power},MaxDelay:${mSensor.maxDelay},MinDelay:${mSensor.minDelay},MaxRange:${mSensor.maximumRange}"
                 //logData = "timestamp,x,y,z,${mSensor.name},Vendor:${mSensor.vendor},Version:${mSensor.version},Power:${mSensor.power},MaxDelay:${mSensor.maxDelay},MinDelay:${mSensor.minDelay},MaxRange:${mSensor.maximumRange}"
                 Snackbar.make(view, getString(R.string.startRecording), Snackbar.LENGTH_LONG).show()
             } else if(!enableLog){
@@ -126,6 +126,13 @@ class Accelerometer : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val appSpecificDir = File(activity!!.filesDir, "intern")
+        if(!appSpecificDir.mkdir()){
+            //Log.d("DBG: ", "mkDir returned false. Dir exists?: " + appSpecificDir.exists())
+        }
+        val mFile = File(appSpecificDir, "tempFile.csv")
+        val bW = BufferedWriter(FileWriter(mFile, true))
+
         var i = 0
         sEventListener = SensorSingleton.registerSelected(sensorManager, mSensor) {
             val str:String = getString(R.string.unitAcceleration)
@@ -134,8 +141,11 @@ class Accelerometer : Fragment() {
             view.card_v3.text = String.format("%.2f", it.values[2]) + " $str"
 
             if(enableLog){
-                logStringBuilder.append("\n${it.timestamp},${it.values[0]},${it.values[1]},${it.values[2]}")
-                //logData += "\n${it.timestamp},${it.values[0]},${it.values[1]},${it.values[2]}"
+                //for(a in 0 until 512){
+                    bW.append("\n${it.timestamp},${it.values[0]},${it.values[1]},${it.values[2]}" as CharSequence)
+                    bW.flush()
+                //}
+                //Log.d("DBG: ", mFile.length().toString())
             }
 
             SensorSingleton.addPointsToChart(i, mData, mChart, it.values)
@@ -149,10 +159,21 @@ class Accelerometer : Fragment() {
             val pfd: ParcelFileDescriptor = activity!!.applicationContext.contentResolver.openFileDescriptor(fUri, "w")!!
             val outStream = FileOutputStream(pfd.fileDescriptor)
 
-            outStream.write(logStringBuilder.toString().toByteArray())
+            val appSpecificDir = File(activity!!.filesDir, "intern")
+            val mFile = File(appSpecificDir, "tempFile.csv")
+            val bR = BufferedReader(FileReader(mFile))
+
+            outStream.write(csvHeader.toByteArray())
+
+            val newLine = "\n".toByteArray()
+            bR.forEachLine {
+                outStream.write(it.toByteArray())
+                outStream.write(newLine)
+                outStream.flush()
+            }
             outStream.close()
+            mFile.delete()
         }
-        logStringBuilder.clear()
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -171,10 +192,7 @@ class Accelerometer : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-
         outState.putBoolean("enableLog", enableLog)
-        outState.putString("logData", logStringBuilder.toString())
-        //outState.putString("logData", logData)
     }
 
     override fun onDestroyView() {
