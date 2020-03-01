@@ -3,8 +3,8 @@
     <color name="colorPrimary">#388e3c</color>
     <color name="colorPrimaryDark">#388e3c</color>
     <color name="colorAccent">#ff1744</color>
-    <color name="textColor">@android:color/secondary_text_light</color>
-    <color name="iconTint">#FFFFFF</color>
+    <color name="textColor">#f2e4f4</color>
+    <color name="iconTint">#f2e4f4</color>
 
     <color name="colorRed">#e53935</color>
     <color name="colorPink">#d81b60</color>

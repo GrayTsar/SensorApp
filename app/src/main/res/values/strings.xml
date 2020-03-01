@@ -2,7 +2,6 @@
     <string name="app_name">SensorApp</string>
 
 
-
     <string name="sensorAccelerometer">Accelerometer</string>
     <string name="sensorMagneticField">Magnetometer</string>
     <string name="sensorGravity">Gravity</string>
@@ -17,25 +16,25 @@
     <string name="sensorStepCounter">Step Counter</string>
     <string name="home">Home</string>
 
-    <string name="labelName">Name: </string>
-    <string name="labelVendor">Vendor: </string>
-    <string name="labelVersion">Version: </string>
-    <string name="labelPower">Power: </string>
-    <string name="labelMaxDelay">Max Delay: </string>
-    <string name="labelMinDelay">Min Delay: </string>
-    <string name="labelMaxRange">Max Range: </string>
+    <string name="labelName">Name:</string>
+    <string name="labelVendor">Vendor:</string>
+    <string name="labelVersion">Version:</string>
+    <string name="labelPower">Power:</string>
+    <string name="labelMaxDelay">Max Delay:</string>
+    <string name="labelMinDelay">Min Delay:</string>
+    <string name="labelMaxRange">Max Range:</string>
 
     <string name="unitAcceleration">m/s²</string>
     <string name="unitMagneticField">µT</string>
     <string name="unitRadiantSecond">rad/s</string>
-    <string name="unitLight">lux</string>
-    <string name="unitPressure">hPa</string>
-    <string name="unitAmpere">mA</string>
-    <string name="unitSteps">Steps</string>
     <string name="unitMicroseconds">µs</string>
     <string name="unitTemperature">°C</string>
-    <string name="unitProximity">cm</string>
+    <string name="unitLight">lux</string>
+    <string name="unitPressure">hPa</string>
     <string name="unitPercent">%</string>
+    <string name="unitProximity">cm</string>
+    <string name="unitSteps">Steps</string>
+    <string name="unitAmpere">mA</string>
 
     <string name="missingSensorBottomBar">is missing</string>
     <string name="startRecording">Recording Sensor Data</string>
@@ -99,7 +98,10 @@
         A sensor of this type reports the number of steps taken by the user
         since the last reboot while activated. The value is reset to zero only on a system reboot.
     </string>
-
-
-
+    <string name="logging">Logging</string>
+    <string name="maxFileSize">4GB Max File size</string>
+    <string name="app_icon">app icon</string>
+    <string name="icon">icon</string>
+    <string name="information">Information</string>
+    <string name="details">Details</string>
 </resources>

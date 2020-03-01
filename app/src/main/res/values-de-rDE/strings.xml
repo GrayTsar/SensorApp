@@ -96,4 +96,11 @@
     <string name="infoStepCounter">
         Meldet die Schritte seit das Gerät zuletzt neu gestartet wurde.
     </string>
+
+    <string name="logging">Loggen</string>
+    <string name="maxFileSize">4GB Max Datei Größe</string>
+    <string name="app_icon">app icon</string>
+    <string name="icon">icon</string>
+    <string name="information">Information</string>
+    <string name="details">Details</string>
 </resources>

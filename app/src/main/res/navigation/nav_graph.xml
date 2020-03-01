@@ -11,64 +11,9 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
     <fragment
-        android:id="@+id/accelerometer"
-        android:name="com.graytsar.sensorapp.Accelerometer"
-        android:label="fragment_acceleration"
-        tools:layout="@layout/fragment_acceleration" />
-    <fragment
-        android:id="@+id/gravity"
-        android:name="com.graytsar.sensorapp.Gravity"
-        android:label="fragment_gravity"
-        tools:layout="@layout/fragment_gravity" />
-    <fragment
-        android:id="@+id/magneticField"
-        android:name="com.graytsar.sensorapp.MagneticField"
-        android:label="fragment_magnetic_field"
-        tools:layout="@layout/fragment_magnetic_field" />
-    <fragment
-        android:id="@+id/gyroscope"
-        android:name="com.graytsar.sensorapp.Gyroscope"
-        android:label="fragment_gyroscope"
-        tools:layout="@layout/fragment_gyroscope" />
-    <fragment
-        android:id="@+id/linearAcceleration"
-        android:name="com.graytsar.sensorapp.LinearAcceleration"
-        android:label="fragment_linear_acceleration"
-        tools:layout="@layout/fragment_linear_acceleration" />
-    <fragment
-        android:id="@+id/ambient_Temperature"
-        android:name="com.graytsar.sensorapp.AmbientTemperature"
-        android:label="fragment_ambient__temperature"
-        tools:layout="@layout/fragment_ambient_temperature" />
-    <fragment
-        android:id="@+id/light"
-        android:name="com.graytsar.sensorapp.Light"
-        android:label="fragment_light"
-        tools:layout="@layout/fragment_light" />
-    <fragment
-        android:id="@+id/pressure"
-        android:name="com.graytsar.sensorapp.Pressure"
-        android:label="fragment_pressure"
-        tools:layout="@layout/fragment_pressure" />
-    <fragment
-        android:id="@+id/relativeHumidity"
-        android:name="com.graytsar.sensorapp.RelativeHumidity"
-        android:label="fragment_relative_humidity"
-        tools:layout="@layout/fragment_relative_humidity" />
-    <fragment
-        android:id="@+id/geomagneticRotationVector"
-        android:name="com.graytsar.sensorapp.GeomagneticRotationVector"
-        android:label="fragment_geomagnetic_rotation_vector"
-        tools:layout="@layout/fragment_geomagnetic_rotation_vector" />
-    <fragment
-        android:id="@+id/proximity"
-        android:name="com.graytsar.sensorapp.Proximity"
-        android:label="fragment_proximity"
-        tools:layout="@layout/fragment_proximity" />
-    <fragment
-        android:id="@+id/stepCounter"
-        android:name="com.graytsar.sensorapp.StepCounter"
-        android:label="fragment_step_counter"
-        tools:layout="@layout/fragment_step_counter" />
+        android:id="@+id/detailFragment"
+        android:name="com.graytsar.sensorapp.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail" />
 
 </navigation>
