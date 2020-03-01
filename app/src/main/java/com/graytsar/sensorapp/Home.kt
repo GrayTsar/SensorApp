@@ -25,7 +25,9 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
+import java.lang.Exception
 import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
@@ -96,6 +98,8 @@ class Home : Fragment(), NavigationView.OnNavigationItemSelectedListener {
 
         return view
     }
+
+
 
     private fun initLayout(){
         typeList.forEach{

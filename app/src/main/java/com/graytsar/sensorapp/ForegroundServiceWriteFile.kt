@@ -13,7 +13,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.IBinder
 import android.os.ParcelFileDescriptor
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import java.io.*
 
@@ -75,7 +74,7 @@ class ForegroundServiceWriteFile: Service() {
                     }
                     override fun onSensorChanged(event: SensorEvent) {
                         if(gbInByte > d.statSize){
-                            dupWriter.write("\n${event.timestamp},${event.values[0]},0,0,${event.accuracy}".toByteArray())
+                            dupWriter.write("\n${event.timestamp},${event.values[0]},0,0,".toByteArray())
                             bW.flush()
 
                             notification.setProgress(100, ((d.statSize / gbInByte.toDouble()) * 100).toInt(), false)
@@ -105,9 +104,9 @@ class ForegroundServiceWriteFile: Service() {
                                 dupWriter.flush()
                             //}
 
-                            notification.setProgress(100, ((d.statSize / 39999.toDouble()) * 100).toInt(), false)
+                            notification.setProgress(100, ((d.statSize / gbInByte.toDouble()) * 100).toInt(), false)
                             notificationManager!!.notify(1, notification.build())
-                            Log.d("DBG: ", " " + (d.statSize / gbInByte.toDouble()) * 100.toDouble())
+                            //Log.d("DBG: ", " " + (d.statSize / gbInByte.toDouble()) * 100.toDouble())
                         }
                         else {
                             dupWriter.close()
