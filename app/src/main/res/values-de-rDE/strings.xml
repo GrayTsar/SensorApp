@@ -2,7 +2,6 @@
 <resources>
     <string name="app_name">Sensor App</string>
 
-
     <string name="sensorAccelerometer">Beschleunigungssensor</string>
     <string name="sensorMagneticField">Magnetometer</string>
     <string name="sensorGravity">Gravitation</string>
@@ -17,13 +16,13 @@
     <string name="sensorStepCounter">Schrittzähler</string>
     <string name="home">Home</string>
 
-    <string name="labelName">Name: </string>
-    <string name="labelVendor">Hersteller: </string>
-    <string name="labelVersion">Version: </string>
-    <string name="labelPower">Strom: </string>
-    <string name="labelMaxDelay">Max Verzögerung: </string>
-    <string name="labelMinDelay">Min Verzögerung: </string>
-    <string name="labelMaxRange">Max Wertebereich: </string>
+    <string name="labelName">Name:</string>
+    <string name="labelVendor">Hersteller:</string>
+    <string name="labelVersion">Version:</string>
+    <string name="labelPower">Strom:</string>
+    <string name="labelMaxDelay">Max Verzögerung:</string>
+    <string name="labelMinDelay">Min Verzögerung:</string>
+    <string name="labelMaxRange">Max Wertebereich:</string>
 
     <string name="unitAcceleration">m/s²</string>
     <string name="unitMagneticField">µT</string>
@@ -40,6 +39,13 @@
     <string name="missingSensorBottomBar">nicht vorhanden</string>
     <string name="startRecording">Aufzeichnung gestartet</string>
     <string name="menuSensorText">Sensor</string>
+
+    <string name="logging">Aufzeichnen</string>
+    <string name="maxFileSize">4GB Max Datei Größe</string>
+    <string name="app_icon">app icon</string>
+    <string name="icon">icon</string>
+    <string name="information">Information</string>
+    <string name="details">Details</string>
 
     <string name="infoAccelerometer">
         Ein Beschleunigungssensor meldet die Beschleunigungskräfte des Geräts an den 3 Achsen zurück.
@@ -96,11 +102,4 @@
     <string name="infoStepCounter">
         Meldet die Schritte seit das Gerät zuletzt neu gestartet wurde.
     </string>
-
-    <string name="logging">Loggen</string>
-    <string name="maxFileSize">4GB Max Datei Größe</string>
-    <string name="app_icon">app icon</string>
-    <string name="icon">icon</string>
-    <string name="information">Information</string>
-    <string name="details">Details</string>
 </resources>

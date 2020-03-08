@@ -1,27 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Sensor App</string>
+    <string name="app_name">сенсор App</string>
 
-    <string name="sensorAccelerometer">Accelerometer</string>
-    <string name="sensorMagneticField">Magnetometer</string>
-    <string name="sensorGravity">Gravity</string>
-    <string name="sensorGyroscope">Gyroscope</string>
-    <string name="sensorLinearAcceleration">Linear Acceleration</string>
-    <string name="sensorAmbientTemperature">Ambient Temperature</string>
-    <string name="sensorLight">Light</string>
-    <string name="sensorPressure">Pressure</string>
-    <string name="sensorRelativeHumidity">Relative Humidity</string>
-    <string name="sensorGeomagneticRotationVector">Rotation Vector</string>
-    <string name="sensorProximity">Proximity</string>
-    <string name="sensorStepCounter">Step Counter</string>
+    <string name="sensorAccelerometer">Скоростной сенсор</string>
+    <string name="sensorMagneticField">Магнетный датчик</string>
+    <string name="sensorGravity">гравитация</string>
+    <string name="sensorGyroscope">гироскоп</string>
+    <string name="sensorLinearAcceleration">линейное ускорение</string>
+    <string name="sensorAmbientTemperature">температура</string>
+    <string name="sensorLight">освещенности</string>
+    <string name="sensorPressure">атмосферное давление</string>
+    <string name="sensorRelativeHumidity">влажность воздуха</string>
+    <string name="sensorGeomagneticRotationVector">Вектор вращения</string>
+    <string name="sensorProximity">Датчик приближения</string>
+    <string name="sensorStepCounter">шагомер</string>
     <string name="home">Home</string>
 
-    <string name="labelName">Name:</string>
-    <string name="labelVendor">Vendor:</string>
-    <string name="labelVersion">Version:</string>
-    <string name="labelPower">Power:</string>
-    <string name="labelMaxDelay">Max Delay:</string>
-    <string name="labelMinDelay">Min Delay:</string>
-    <string name="labelMaxRange">Max Range:</string>
+    <string name="labelName">имя:</string>
+    <string name="labelVendor">изготовитель:</string>
+    <string name="labelVersion">версия:</string>
+    <string name="labelPower">электричество:</string>
+    <string name="labelMaxDelay">Макс. задержка:</string>
+    <string name="labelMinDelay">мин. задержка:</string>
+    <string name="labelMaxRange">Макс. диапазон:</string>
 
     <string name="unitAcceleration">m/s²</string>
     <string name="unitMagneticField">µT</string>
@@ -32,19 +33,19 @@
     <string name="unitPressure">hPa</string>
     <string name="unitPercent">%</string>
     <string name="unitProximity">cm</string>
-    <string name="unitSteps">Steps</string>
+    <string name="unitSteps">Шаги</string>
     <string name="unitAmpere">mA</string>
 
-    <string name="missingSensorBottomBar">is missing</string>
-    <string name="startRecording">Recording Sensor Data</string>
-    <string name="menuSensorText">Sensor</string>
+    <string name="missingSensorBottomBar">не существует</string>
+    <string name="startRecording">Запись началась</string>
+    <string name="menuSensorText">сенсор</string>
 
-    <string name="logging">Logging</string>
-    <string name="maxFileSize">4GB Max File size</string>
+    <string name="logging">Запись</string>
+    <string name="maxFileSize">4GB Размер файла</string>
     <string name="app_icon">app icon</string>
     <string name="icon">icon</string>
-    <string name="information">Information</string>
-    <string name="details">Details</string>
+    <string name="information">информация</string>
+    <string name="details">деталь</string>
 
     <string name="infoAccelerometer">
         An accelerometer sensor reports the acceleration of the device
