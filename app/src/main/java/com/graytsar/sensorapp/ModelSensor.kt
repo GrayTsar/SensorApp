@@ -1,6 +1,5 @@
 package com.graytsar.sensorapp
 
-import android.graphics.Bitmap
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -13,15 +12,16 @@ import androidx.navigation.NavController
 class ModelSensor(
     val sensor: Sensor,
     val title: String,
-    val icon: Bitmap,
+    val icon: Int,
     val sensorValuesCount: Int,
     val unit:String,
+    val backgroundColor:Int,
     private val sensorManager: SensorManager,
     private val navController: NavController )
 {
-    val xValue = MutableLiveData<String>("default")
-    val yValue = MutableLiveData<String>("default")
-    val zValue = MutableLiveData<String>("default")
+    val xValue = MutableLiveData("default")
+    val yValue = MutableLiveData("default")
+    val zValue = MutableLiveData("default")
 
     fun registerSensor():SensorEventListener {
         var o:SensorEventListener? = null

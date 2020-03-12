@@ -14,11 +14,10 @@
         >
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbarLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            android:id="@+id/collapsingToolbarLayout"
             >
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -51,8 +50,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="@android:color/transparent"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:layout_collapseMode="parallax"
-                />
+                app:layout_collapseMode="parallax" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -65,9 +63,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:backgroundTint="@color/colorAccent"
-        android:src="@drawable/ic_play_arrow_white_24dp"
-        app:tint = "#FFFFFF"
+        app:backgroundTint="@color/colorAccent"
+        app:tint="@color/colorDrawerTint"
         app:borderWidth="0dp"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end" />

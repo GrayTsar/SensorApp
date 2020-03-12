@@ -47,6 +47,9 @@
     <string name="information">Information</string>
     <string name="details">Details</string>
 
+    <string name="lightTheme">Helles Theme</string>
+    <string name="darkTheme">Dunkles Theme</string>
+
     <string name="infoAccelerometer">
         Ein Beschleunigungssensor meldet die Beschleunigungskräfte des Geräts an den 3 Achsen zurück.
         Der aufgezeichnete Beschleunigungswert beinhaltet den Einfluss der Gravitation.

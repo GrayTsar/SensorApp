@@ -10,8 +10,8 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -20,7 +20,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlin.collections.ArrayList
@@ -103,75 +102,74 @@ class Home : Fragment(), NavigationView.OnNavigationItemSelectedListener {
             if(mSensor != null){
                 when (mSensor.type) {
                     Sensor.TYPE_ACCELEROMETER -> {
-                        val model = ModelSensor(mSensor, getString(R.string.sensorAccelerometer), ContextCompat.getDrawable(context!!, R.drawable.ic_acceleration_white)!!.toBitmap(), 3, getString(R.string.unitAcceleration), sensorManager, navController)
+                        val model = ModelSensor(mSensor, getString(R.string.sensorAccelerometer), R.drawable.ic_acceleration_white, 3, getString(R.string.unitAcceleration), ContextCompat.getColor(activity!!, R.color.colorRed), sensorManager, navController)
                         list.add(model)
                         //set background color in adapter
-                        //assign bitmap in adapter
 
                         //arListSensorEventListener.add(model.registerSensor())
                     }
                     Sensor.TYPE_MAGNETIC_FIELD -> {
-                        val model = ModelSensor(mSensor, getString(R.string.sensorMagneticField), ContextCompat.getDrawable(context!!, R.drawable.ic_magnet_white)!!.toBitmap(), 3, getString(R.string.unitMagneticField), sensorManager, navController)
+                        val model = ModelSensor(mSensor, getString(R.string.sensorMagneticField), R.drawable.ic_magnet_white, 3, getString(R.string.unitMagneticField), ContextCompat.getColor(activity!!, R.color.colorPink), sensorManager, navController)
                         list.add(model)
 
                         //arListSensorEventListener.add(model.registerSensor())
                     }
                     Sensor.TYPE_GRAVITY -> {
-                        val model = ModelSensor(mSensor, getString(R.string.sensorGravity), ContextCompat.getDrawable(context!!, R.drawable.ic_gravity_white)!!.toBitmap(), 3, getString(R.string.unitAcceleration), sensorManager, navController)
+                        val model = ModelSensor(mSensor, getString(R.string.sensorGravity), R.drawable.ic_gravity_white, 3, getString(R.string.unitAcceleration), ContextCompat.getColor(activity!!, R.color.colorPurple), sensorManager, navController)
                         list.add(model)
 
                         //arListSensorEventListener.add(model.registerSensor())
                     }
                     Sensor.TYPE_GYROSCOPE -> {
-                        val model = ModelSensor(mSensor, getString(R.string.sensorGyroscope), ContextCompat.getDrawable(context!!, R.drawable.ic_gyroscope_white)!!.toBitmap(), 3, getString(R.string.unitRadiantSecond), sensorManager, navController)
+                        val model = ModelSensor(mSensor, getString(R.string.sensorGyroscope), R.drawable.ic_gyroscope_white, 3, getString(R.string.unitRadiantSecond), ContextCompat.getColor(activity!!, R.color.colorDeepPurple), sensorManager, navController)
                         list.add(model)
 
                         //arListSensorEventListener.add(model.registerSensor())
                     }
                     Sensor.TYPE_LINEAR_ACCELERATION -> {
-                        val model = ModelSensor(mSensor, getString(R.string.sensorLinearAcceleration), ContextCompat.getDrawable(context!!, R.drawable.ic_linearacceleration_white)!!.toBitmap(),3, getString(R.string.unitAcceleration), sensorManager, navController)
+                        val model = ModelSensor(mSensor, getString(R.string.sensorLinearAcceleration), R.drawable.ic_linearacceleration_white,3, getString(R.string.unitAcceleration), ContextCompat.getColor(activity!!, R.color.colorIndigo), sensorManager, navController)
                         list.add(model)
 
                         //arListSensorEventListener.add(model.registerSensor())
                     }
                     Sensor.TYPE_AMBIENT_TEMPERATURE -> {
-                        val model = ModelSensor(mSensor, getString(R.string.sensorAmbientTemperature), ContextCompat.getDrawable(context!!, R.drawable.ic_temperature_white)!!.toBitmap(), 1, getString(R.string.unitTemperature), sensorManager, navController)
+                        val model = ModelSensor(mSensor, getString(R.string.sensorAmbientTemperature), R.drawable.ic_temperature_white, 1, getString(R.string.unitTemperature), ContextCompat.getColor(activity!!, R.color.colorBlue), sensorManager, navController)
                         list.add(model)
 
                         //arListSensorEventListener.add(model.registerSensor())
                     }
                     Sensor.TYPE_LIGHT -> {
-                        val model = ModelSensor(mSensor, getString(R.string.sensorLight), ContextCompat.getDrawable(context!!, R.drawable.ic_light_white)!!.toBitmap(), 1, getString(R.string.unitLight), sensorManager, navController)
+                        val model = ModelSensor(mSensor, getString(R.string.sensorLight), R.drawable.ic_light_white, 1, getString(R.string.unitLight), ContextCompat.getColor(activity!!, R.color.colorLightBlue), sensorManager, navController)
                         list.add(model)
 
                         //arListSensorEventListener.add(model.registerSensor())
                     }
                     Sensor.TYPE_PRESSURE -> {
-                        val model = ModelSensor(mSensor, getString(R.string.sensorPressure), ContextCompat.getDrawable(context!!, R.drawable.ic_pressure_white)!!.toBitmap(),1, getString(R.string.unitPressure), sensorManager, navController)
+                        val model = ModelSensor(mSensor, getString(R.string.sensorPressure), R.drawable.ic_pressure_white,1, getString(R.string.unitPressure), ContextCompat.getColor(activity!!, R.color.colorCyan), sensorManager, navController)
                         list.add(model)
 
                         //arListSensorEventListener.add(model.registerSensor())
                     }
                     Sensor.TYPE_RELATIVE_HUMIDITY -> {
-                        val model = ModelSensor(mSensor, getString(R.string.sensorRelativeHumidity), ContextCompat.getDrawable(context!!, R.drawable.ic_humidity_white)!!.toBitmap(),1, getString(R.string.unitPercent), sensorManager, navController)
+                        val model = ModelSensor(mSensor, getString(R.string.sensorRelativeHumidity), R.drawable.ic_humidity_white,1, getString(R.string.unitPercent), ContextCompat.getColor(activity!!, R.color.colorTeal), sensorManager, navController)
                         list.add(model)
 
                         //arListSensorEventListener.add(model.registerSensor())
                     }
                     Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR -> {
-                        val model = ModelSensor(mSensor, getString(R.string.sensorGeomagneticRotationVector), ContextCompat.getDrawable(context!!, R.drawable.ic_rotate_white)!!.toBitmap(),3, "", sensorManager, navController)
+                        val model = ModelSensor(mSensor, getString(R.string.sensorGeomagneticRotationVector), R.drawable.ic_rotate_white,3, "", ContextCompat.getColor(activity!!, R.color.colorGreen), sensorManager, navController)
                         list.add(model)
 
                         //arListSensorEventListener.add(model.registerSensor())
                     }
                     Sensor.TYPE_PROXIMITY -> {
-                        val model = ModelSensor(mSensor, getString(R.string.sensorProximity), ContextCompat.getDrawable(context!!, R.drawable.ic_proximity_white)!!.toBitmap(), 1, getString(R.string.unitProximity), sensorManager, navController)
+                        val model = ModelSensor(mSensor, getString(R.string.sensorProximity), R.drawable.ic_proximity_white, 1, getString(R.string.unitProximity), ContextCompat.getColor(activity!!, R.color.colorLightGreen), sensorManager, navController)
                         list.add(model)
 
                         //arListSensorEventListener.add(model.registerSensor())
                     }
                     Sensor.TYPE_STEP_COUNTER -> {
-                        val model = ModelSensor(mSensor, getString(R.string.sensorStepCounter), ContextCompat.getDrawable(context!!, R.drawable.ic_steps_white)!!.toBitmap(), 1, getString(R.string.unitSteps), sensorManager, navController)
+                        val model = ModelSensor(mSensor, getString(R.string.sensorStepCounter), R.drawable.ic_steps_white, 1, getString(R.string.unitSteps), ContextCompat.getColor(activity!!, R.color.colorLime), sensorManager, navController)
                         list.add(model)
 
                         //arListSensorEventListener.add(model.registerSensor())
@@ -360,8 +358,24 @@ class Home : Fragment(), NavigationView.OnNavigationItemSelectedListener {
                 else
                     Snackbar.make(d, p0.title.toString() + " ${getString(R.string.missingSensorBottomBar)}", Snackbar.LENGTH_LONG).show()
             }
+            R.id.lightTheme ->{
+                val sharedPref = context?.getSharedPreferences(keyPreferenceTheme, Context.MODE_PRIVATE)
+                val editor = sharedPref?.edit()
+                editor?.putBoolean(keyTheme, false)
+                editor?.apply()
+
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+            }
+            R.id.darkTheme ->{
+                val sharedPref = context?.getSharedPreferences(keyPreferenceTheme, Context.MODE_PRIVATE)
+                val editor = sharedPref?.edit()
+                editor?.putBoolean(keyTheme, true)
+                editor?.apply()
+
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
             else -> {
-                Snackbar.make(drawer_layout, "unknown", Snackbar.LENGTH_LONG).show()
             }
         }
         d.closeDrawer(GravityCompat.START)

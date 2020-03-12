@@ -1,6 +1,5 @@
 package com.graytsar.sensorapp
 
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -15,7 +14,7 @@ import com.github.mikephil.charting.data.LineDataSet
 
 class ModelDetail(val sensor: Sensor,
                   val title: String,
-                  val icon: Bitmap,
+                  val icon: Int,
                   private val displayPoints: Float,
                   val sensorValuesCount: Int,
                   private val sensorManager: SensorManager,
@@ -29,14 +28,18 @@ class ModelDetail(val sensor: Sensor,
                   val unit: String,
                   val information: String )
 {
-    val xValue = MutableLiveData<String>("default")
-    val yValue = MutableLiveData<String>("default")
-    val zValue = MutableLiveData<String>("default")
+    val xValue = MutableLiveData("default")
+    val yValue = MutableLiveData("default")
+    val zValue = MutableLiveData("default")
 
     var csvHeader:String = ""
 
     init {
-        csvHeader = "TIMESTAMP,X,Y,Z,${sensor.name},VENDOR:${sensor.vendor},VERSION:${sensor.version},POWER:${sensor.power},MAXDELAY:${sensor.maxDelay},MINDELAY:${sensor.minDelay},MAXRANGE:${sensor.maximumRange}"
+        var maxDelay = -1
+        if(android.os.Build.VERSION.SDK_INT >= 21)
+            maxDelay = sensor.maxDelay
+
+        csvHeader = "TIMESTAMP,X,Y,Z,${sensor.name},VENDOR:${sensor.vendor},VERSION:${sensor.version},POWER:${sensor.power},MAXDELAY:$maxDelay,MINDELAY:${sensor.minDelay},MAXRANGE:${sensor.maximumRange}"
     }
 
     private var mData:LineData = LineData()
@@ -88,14 +91,12 @@ class ModelDetail(val sensor: Sensor,
     }
 
     fun addPointsToChart(position:Int, valueAr:FloatArray){
-        var i = 0 //axis index
 
-        for(c in 0 until sensorValuesCount) {
+        for((i, c) in (0 until sensorValuesCount).withIndex()) {
             val entry = Entry(position.toFloat(), valueAr[i])
             mData.addEntry(entry, i)
             if (mData.getDataSetByIndex(i).entryCount > displayPoints)
                 mData.getDataSetByIndex(i).removeFirst()
-            i++
         }
 
         mData.notifyDataChanged() //tell LineData to do its magic

@@ -1,9 +1,14 @@
 package com.graytsar.sensorapp
 
+import android.content.Context
 import android.hardware.Sensor
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
+import androidx.databinding.BindingMethod
+import androidx.databinding.BindingMethods
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -13,6 +18,15 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+
+const val keyPreferenceTheme="preferenceTheme"
+const val keyTheme="theme"
+
+@BindingMethods(value = [
+    BindingMethod(
+        type = ImageView::class,
+        attribute = "app:srcCompat",
+        method = "setImageResource" )])
 
 class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -40,8 +54,12 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         setupActionBarWithNavController(navController, appBarConfiguration) //link with toolbar
         navigationView.setupWithNavController(navController) //link with fragments
 
-
         navController.addOnDestinationChangedListener(this)
+
+        val sharedPref = this.getSharedPreferences(keyPreferenceTheme, Context.MODE_PRIVATE)
+        if(sharedPref.getBoolean(keyTheme, false)){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -107,9 +125,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                 bar.title = getString(R.string.sensorStepCounter)
                 navController.navigate(R.id.detailFragment, Bundle().apply { putInt("typeSensor", Sensor.TYPE_STEP_COUNTER) })
             }
-
         }
     }
-
-
 }

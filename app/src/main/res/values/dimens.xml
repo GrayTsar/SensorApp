@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_text_horizontal">8dp</dimen>
+    <dimen name="margin_text_vertical">8dp</dimen>
+    <dimen name="margin_card">4dp</dimen>
+</resources>

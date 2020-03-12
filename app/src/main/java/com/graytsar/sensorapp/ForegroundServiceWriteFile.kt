@@ -53,7 +53,7 @@ class ForegroundServiceWriteFile: Service() {
             val notification = NotificationCompat.Builder(this, channelID).apply {
                 setContentTitle("${getString(R.string.logging)} $title")
                 setContentText(getString(R.string.maxFileSize))
-                setSmallIcon(R.drawable.ic_refresh_white_24dp)
+                setSmallIcon(R.drawable.baseline_refresh_black_24dp)
                 setChannelId(channelID)
             }
 

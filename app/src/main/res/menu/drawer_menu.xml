@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:title="@string/menuSensorText">
         <menu>
@@ -58,6 +59,15 @@
                     android:title="@string/sensorStepCounter" />
             </group>
         </menu>
+    </item>
+
+    <item android:title="">
+        <item
+            android:id="@+id/lightTheme"
+            android:title="@string/lightTheme" />
+        <item
+            android:id="@+id/darkTheme"
+            android:title="@string/darkTheme" />
     </item>
 </menu>
 

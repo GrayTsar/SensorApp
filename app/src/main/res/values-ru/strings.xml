@@ -47,6 +47,9 @@
     <string name="information">информация</string>
     <string name="details">деталь</string>
 
+    <string name="lightTheme">легкая тема</string>
+    <string name="darkTheme">темная тема</string>
+
     <string name="infoAccelerometer">
         An accelerometer sensor reports the acceleration of the device
         along the 3 sensor axes. The measured acceleration includes both

@@ -15,7 +15,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_detail.view.*
@@ -69,18 +68,20 @@ class DetailFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_detail, container, false)
         val mSensor = sensorManager.getDefaultSensor(sensorType!!)
 
+        requireActivity().fab.setImageResource(R.drawable.ic_play_arrow_white_24dp)
+
         if(savedInstanceState != null){
             enableLog = savedInstanceState.get("enableLog") as Boolean
 
             if(enableLog){
-                requireActivity().fab.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_pause_white_24dp))
+                requireActivity().fab.setImageResource(R.drawable.ic_pause_white_24dp)
             }
         }
 
         val onClickListener = View.OnClickListener {
             enableLog = !enableLog
             if(enableLog){
-                requireActivity().fab.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_pause_white_24dp))
+                requireActivity().fab.setImageResource(R.drawable.ic_pause_white_24dp)
                 Snackbar.make(view, getString(R.string.startRecording), Snackbar.LENGTH_LONG).show()
 
                 val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
@@ -89,7 +90,7 @@ class DetailFragment : Fragment() {
                 intent.putExtra(Intent.EXTRA_TITLE, list[0].title + ".txt")
                 startActivityForResult(intent, 1)
             } else if(!enableLog){
-                requireActivity().fab.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_play_arrow_white_24dp))
+                requireActivity().fab.setImageResource(R.drawable.ic_play_arrow_white_24dp)
 
                 val intent = Intent(context, ForegroundServiceWriteFile::class.java)
                 intent.putExtra("enableLog", false)
@@ -111,12 +112,17 @@ class DetailFragment : Fragment() {
         if(points < 400)
             points = 400f
 
+        var maxDelay = -1
+
         when (sensorType) {
             Sensor.TYPE_ACCELEROMETER -> {
+                if(android.os.Build.VERSION.SDK_INT >= 21)
+                    maxDelay = mSensor.maxDelay
+
                 val model = ModelDetail(
                     mSensor,
                     getString(R.string.sensorAccelerometer),
-                    ContextCompat.getDrawable(context!!, R.drawable.ic_acceleration_white)!!.toBitmap(),
+                    R.drawable.ic_acceleration_white,
                     points,
                     3,
                     sensorManager,
@@ -124,7 +130,7 @@ class DetailFragment : Fragment() {
                     "${getString(R.string.labelVendor)}  ${mSensor.vendor}",
                     "${getString(R.string.labelVersion)}  ${mSensor.version}",
                     "${getString(R.string.labelPower)}  ${mSensor.power} ${getString(R.string.unitAmpere)}",
-                    "${getString(R.string.labelMaxDelay)}  ${mSensor.maxDelay} ${getString(R.string.unitMicroseconds)}",
+                    "${getString(R.string.labelMaxDelay)}  $maxDelay ${getString(R.string.unitMicroseconds)}",
                     "${getString(R.string.labelMinDelay)}  ${mSensor.minDelay} ${getString(R.string.unitMicroseconds)}",
                     "${getString(R.string.labelMaxRange)}  ${mSensor.maximumRange} ${getString(R.string.unitAcceleration)}",
                     getString(R.string.unitAcceleration),
@@ -135,10 +141,13 @@ class DetailFragment : Fragment() {
                 sensorEventListener = model.registerSensor()
             }
             Sensor.TYPE_MAGNETIC_FIELD ->{
+                if(android.os.Build.VERSION.SDK_INT >= 21)
+                    maxDelay = mSensor.maxDelay
+
                 val model = ModelDetail(
                     mSensor,
                     getString(R.string.sensorMagneticField),
-                    ContextCompat.getDrawable(context!!, R.drawable.ic_magnet_white)!!.toBitmap(),
+                    R.drawable.ic_magnet_white,
                     points,
                     3,
                     sensorManager,
@@ -146,7 +155,7 @@ class DetailFragment : Fragment() {
                     "${getString(R.string.labelVendor)}  ${mSensor.vendor}",
                     "${getString(R.string.labelVersion)}  ${mSensor.version}",
                     "${getString(R.string.labelPower)}  ${mSensor.power} ${getString(R.string.unitAmpere)}",
-                    "${getString(R.string.labelMaxDelay)}  ${mSensor.maxDelay} ${getString(R.string.unitMicroseconds)}",
+                    "${getString(R.string.labelMaxDelay)}  $maxDelay ${getString(R.string.unitMicroseconds)}",
                     "${getString(R.string.labelMinDelay)}  ${mSensor.minDelay} ${getString(R.string.unitMicroseconds)}",
                     "${getString(R.string.labelMaxRange)}  ${mSensor.maximumRange} ${getString(R.string.unitMagneticField)}",
                     getString(R.string.unitMagneticField),
@@ -157,10 +166,13 @@ class DetailFragment : Fragment() {
                 sensorEventListener = model.registerSensor()
             }
             Sensor.TYPE_GRAVITY -> {
+                if(android.os.Build.VERSION.SDK_INT >= 21)
+                    maxDelay = mSensor.maxDelay
+
                 val model = ModelDetail(
                     mSensor,
                     getString(R.string.sensorGravity),
-                    ContextCompat.getDrawable(context!!, R.drawable.ic_gravity_white)!!.toBitmap(),
+                    R.drawable.ic_gravity_white,
                     points,
                     3,
                     sensorManager,
@@ -168,7 +180,7 @@ class DetailFragment : Fragment() {
                     "${getString(R.string.labelVendor)}  ${mSensor.vendor}",
                     "${getString(R.string.labelVersion)}  ${mSensor.version}",
                     "${getString(R.string.labelPower)}  ${mSensor.power} ${getString(R.string.unitAmpere)}",
-                    "${getString(R.string.labelMaxDelay)}  ${mSensor.maxDelay} ${getString(R.string.unitMicroseconds)}",
+                    "${getString(R.string.labelMaxDelay)}  $maxDelay ${getString(R.string.unitMicroseconds)}",
                     "${getString(R.string.labelMinDelay)}  ${mSensor.minDelay} ${getString(R.string.unitMicroseconds)}",
                     "${getString(R.string.labelMaxRange)}  ${mSensor.maximumRange} ${getString(R.string.unitAcceleration)}",
                     getString(R.string.unitAcceleration),
@@ -179,10 +191,13 @@ class DetailFragment : Fragment() {
                 sensorEventListener = model.registerSensor()
             }
             Sensor.TYPE_GYROSCOPE -> {
+                if(android.os.Build.VERSION.SDK_INT >= 21)
+                    maxDelay = mSensor.maxDelay
+
                 val model = ModelDetail(
                     mSensor,
                     getString(R.string.sensorGyroscope),
-                    ContextCompat.getDrawable(context!!, R.drawable.ic_gyroscope_white)!!.toBitmap(),
+                    R.drawable.ic_gyroscope_white,
                     points,
                     3,
                     sensorManager,
@@ -190,7 +205,7 @@ class DetailFragment : Fragment() {
                     "${getString(R.string.labelVendor)}  ${mSensor.vendor}",
                     "${getString(R.string.labelVersion)}  ${mSensor.version}",
                     "${getString(R.string.labelPower)}  ${mSensor.power} ${getString(R.string.unitAmpere)}",
-                    "${getString(R.string.labelMaxDelay)}  ${mSensor.maxDelay} ${getString(R.string.unitMicroseconds)}",
+                    "${getString(R.string.labelMaxDelay)}  $maxDelay ${getString(R.string.unitMicroseconds)}",
                     "${getString(R.string.labelMinDelay)}  ${mSensor.minDelay} ${getString(R.string.unitMicroseconds)}",
                     "${getString(R.string.labelMaxRange)}  ${mSensor.maximumRange} ${getString(R.string.unitRadiantSecond)}",
                     getString(R.string.unitRadiantSecond),
@@ -201,10 +216,13 @@ class DetailFragment : Fragment() {
                 sensorEventListener = model.registerSensor()
             }
             Sensor.TYPE_LINEAR_ACCELERATION -> {
+                if(android.os.Build.VERSION.SDK_INT >= 21)
+                    maxDelay = mSensor.maxDelay
+
                 val model = ModelDetail(
                     mSensor,
                     getString(R.string.sensorLinearAcceleration),
-                    ContextCompat.getDrawable(context!!, R.drawable.ic_linearacceleration_white)!!.toBitmap(),
+                    R.drawable.ic_linearacceleration_white,
                     points,
                     3,
                     sensorManager,
@@ -212,7 +230,7 @@ class DetailFragment : Fragment() {
                     "${getString(R.string.labelVendor)}  ${mSensor.vendor}",
                     "${getString(R.string.labelVersion)}  ${mSensor.version}",
                     "${getString(R.string.labelPower)}  ${mSensor.power} ${getString(R.string.unitAmpere)}",
-                    "${getString(R.string.labelMaxDelay)}  ${mSensor.maxDelay} ${getString(R.string.unitMicroseconds)}",
+                    "${getString(R.string.labelMaxDelay)}  $maxDelay ${getString(R.string.unitMicroseconds)}",
                     "${getString(R.string.labelMinDelay)}  ${mSensor.minDelay} ${getString(R.string.unitMicroseconds)}",
                     "${getString(R.string.labelMaxRange)}  ${mSensor.maximumRange} ${getString(R.string.unitAcceleration)}",
                     getString(R.string.unitAcceleration),
@@ -223,10 +241,13 @@ class DetailFragment : Fragment() {
                 sensorEventListener = model.registerSensor()
             }
             Sensor.TYPE_AMBIENT_TEMPERATURE -> {
+                if(android.os.Build.VERSION.SDK_INT >= 21)
+                    maxDelay = mSensor.maxDelay
+
                 val model = ModelDetail(
                     mSensor,
                     getString(R.string.sensorAmbientTemperature),
-                    ContextCompat.getDrawable(context!!, R.drawable.ic_temperature_white)!!.toBitmap(),
+                    R.drawable.ic_temperature_white,
                     100f,
                     1,
                     sensorManager,
@@ -234,7 +255,7 @@ class DetailFragment : Fragment() {
                     "${getString(R.string.labelVendor)}  ${mSensor.vendor}",
                     "${getString(R.string.labelVersion)}  ${mSensor.version}",
                     "${getString(R.string.labelPower)}  ${mSensor.power} ${getString(R.string.unitAmpere)}",
-                    "${getString(R.string.labelMaxDelay)}  ${mSensor.maxDelay} ${getString(R.string.unitMicroseconds)}",
+                    "${getString(R.string.labelMaxDelay)}  $maxDelay ${getString(R.string.unitMicroseconds)}",
                     "${getString(R.string.labelMinDelay)}  ${mSensor.minDelay} ${getString(R.string.unitMicroseconds)}",
                     "${getString(R.string.labelMaxRange)}  ${mSensor.maximumRange} ${getString(R.string.unitTemperature)}",
                     getString(R.string.unitTemperature),
@@ -245,10 +266,13 @@ class DetailFragment : Fragment() {
                 sensorEventListener = model.registerSensor()
             }
             Sensor.TYPE_LIGHT -> {
+                if(android.os.Build.VERSION.SDK_INT >= 21)
+                    maxDelay = mSensor.maxDelay
+
                 val model = ModelDetail(
                     mSensor,
                     getString(R.string.sensorLight),
-                    ContextCompat.getDrawable(context!!, R.drawable.ic_light_white)!!.toBitmap(),
+                    R.drawable.ic_light_white,
                     100f,
                     1,
                     sensorManager,
@@ -256,7 +280,7 @@ class DetailFragment : Fragment() {
                     "${getString(R.string.labelVendor)}  ${mSensor.vendor}",
                     "${getString(R.string.labelVersion)}  ${mSensor.version}",
                     "${getString(R.string.labelPower)}  ${mSensor.power} ${getString(R.string.unitAmpere)}",
-                    "${getString(R.string.labelMaxDelay)}  ${mSensor.maxDelay} ${getString(R.string.unitMicroseconds)}",
+                    "${getString(R.string.labelMaxDelay)}  $maxDelay ${getString(R.string.unitMicroseconds)}",
                     "${getString(R.string.labelMinDelay)}  ${mSensor.minDelay} ${getString(R.string.unitMicroseconds)}",
                     "${getString(R.string.labelMaxRange)}  ${mSensor.maximumRange} ${getString(R.string.unitLight)}",
                     getString(R.string.unitLight),
@@ -267,10 +291,13 @@ class DetailFragment : Fragment() {
                 sensorEventListener = model.registerSensor()
             }
             Sensor.TYPE_PRESSURE -> {
+                if(android.os.Build.VERSION.SDK_INT >= 21)
+                    maxDelay = mSensor.maxDelay
+
                 val model = ModelDetail(
                     mSensor,
                     getString(R.string.sensorPressure),
-                    ContextCompat.getDrawable(context!!, R.drawable.ic_pressure_white)!!.toBitmap(),
+                    R.drawable.ic_pressure_white,
                     100f,
                     1,
                     sensorManager,
@@ -278,7 +305,7 @@ class DetailFragment : Fragment() {
                     "${getString(R.string.labelVendor)}  ${mSensor.vendor}",
                     "${getString(R.string.labelVersion)}  ${mSensor.version}",
                     "${getString(R.string.labelPower)}  ${mSensor.power} ${getString(R.string.unitAmpere)}",
-                    "${getString(R.string.labelMaxDelay)}  ${mSensor.maxDelay} ${getString(R.string.unitMicroseconds)}",
+                    "${getString(R.string.labelMaxDelay)}  $maxDelay ${getString(R.string.unitMicroseconds)}",
                     "${getString(R.string.labelMinDelay)}  ${mSensor.minDelay} ${getString(R.string.unitMicroseconds)}",
                     "${getString(R.string.labelMaxRange)}  ${mSensor.maximumRange} ${getString(R.string.unitPressure)}",
                     getString(R.string.unitPressure),
@@ -289,10 +316,13 @@ class DetailFragment : Fragment() {
                 sensorEventListener = model.registerSensor()
             }
             Sensor.TYPE_RELATIVE_HUMIDITY -> {
+                if(android.os.Build.VERSION.SDK_INT >= 21)
+                    maxDelay = mSensor.maxDelay
+
                 val model = ModelDetail(
                     mSensor,
                     getString(R.string.sensorRelativeHumidity),
-                    ContextCompat.getDrawable(context!!, R.drawable.ic_humidity_white)!!.toBitmap(),
+                    R.drawable.ic_humidity_white,
                     100f,
                     1,
                     sensorManager,
@@ -300,7 +330,7 @@ class DetailFragment : Fragment() {
                     "${getString(R.string.labelVendor)}  ${mSensor.vendor}",
                     "${getString(R.string.labelVersion)}  ${mSensor.version}",
                     "${getString(R.string.labelPower)}  ${mSensor.power} ${getString(R.string.unitAmpere)}",
-                    "${getString(R.string.labelMaxDelay)}  ${mSensor.maxDelay} ${getString(R.string.unitMicroseconds)}",
+                    "${getString(R.string.labelMaxDelay)}  $maxDelay ${getString(R.string.unitMicroseconds)}",
                     "${getString(R.string.labelMinDelay)}  ${mSensor.minDelay} ${getString(R.string.unitMicroseconds)}",
                     "${getString(R.string.labelMaxRange)}  ${mSensor.maximumRange} ${getString(R.string.unitPercent)}",
                     getString(R.string.unitPercent),
@@ -311,10 +341,13 @@ class DetailFragment : Fragment() {
                 sensorEventListener = model.registerSensor()
             }
             Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR -> {
+                if(android.os.Build.VERSION.SDK_INT >= 21)
+                    maxDelay = mSensor.maxDelay
+
                 val model = ModelDetail(
                     mSensor,
                     getString(R.string.sensorGeomagneticRotationVector),
-                    ContextCompat.getDrawable(context!!, R.drawable.ic_rotate_white)!!.toBitmap(),
+                    R.drawable.ic_rotate_white,
                     points,
                     3,
                     sensorManager,
@@ -322,7 +355,7 @@ class DetailFragment : Fragment() {
                     "${getString(R.string.labelVendor)}  ${mSensor.vendor}",
                     "${getString(R.string.labelVersion)}  ${mSensor.version}",
                     "${getString(R.string.labelPower)}  ${mSensor.power} ${getString(R.string.unitAmpere)}",
-                    "${getString(R.string.labelMaxDelay)}  ${mSensor.maxDelay} ${getString(R.string.unitMicroseconds)}",
+                    "${getString(R.string.labelMaxDelay)}  $maxDelay ${getString(R.string.unitMicroseconds)}",
                     "${getString(R.string.labelMinDelay)}  ${mSensor.minDelay} ${getString(R.string.unitMicroseconds)}",
                     "${getString(R.string.labelMaxRange)}  ${mSensor.maximumRange}",
                     "",
@@ -333,10 +366,13 @@ class DetailFragment : Fragment() {
                 sensorEventListener = model.registerSensor()
             }
             Sensor.TYPE_PROXIMITY -> {
+                if(android.os.Build.VERSION.SDK_INT >= 21)
+                    maxDelay = mSensor.maxDelay
+
                 val model = ModelDetail(
                     mSensor,
                     getString(R.string.sensorProximity),
-                    ContextCompat.getDrawable(context!!, R.drawable.ic_proximity_white)!!.toBitmap(),
+                    R.drawable.ic_proximity_white,
                     50f,
                     1,
                     sensorManager,
@@ -344,7 +380,7 @@ class DetailFragment : Fragment() {
                     "${getString(R.string.labelVendor)}  ${mSensor.vendor}",
                     "${getString(R.string.labelVersion)}  ${mSensor.version}",
                     "${getString(R.string.labelPower)}  ${mSensor.power} ${getString(R.string.unitAmpere)}",
-                    "${getString(R.string.labelMaxDelay)}  ${mSensor.maxDelay} ${getString(R.string.unitMicroseconds)}",
+                    "${getString(R.string.labelMaxDelay)}  $maxDelay ${getString(R.string.unitMicroseconds)}",
                     "${getString(R.string.labelMinDelay)}  ${mSensor.minDelay} ${getString(R.string.unitMicroseconds)}",
                     "${getString(R.string.labelMaxRange)}  ${mSensor.maximumRange} ${getString(R.string.unitProximity)}",
                     getString(R.string.unitProximity),
@@ -355,10 +391,13 @@ class DetailFragment : Fragment() {
                 sensorEventListener = model.registerSensor()
             }
             Sensor.TYPE_STEP_COUNTER -> {
+                if(android.os.Build.VERSION.SDK_INT >= 21)
+                    maxDelay = mSensor.maxDelay
+
                 val model = ModelDetail(
                     mSensor,
                     getString(R.string.sensorStepCounter),
-                    ContextCompat.getDrawable(context!!, R.drawable.ic_steps_white)!!.toBitmap(),
+                    R.drawable.ic_steps_white,
                     50f,
                     1,
                     sensorManager,
@@ -366,7 +405,7 @@ class DetailFragment : Fragment() {
                     "${getString(R.string.labelVendor)}  ${mSensor.vendor}",
                     "${getString(R.string.labelVersion)}  ${mSensor.version}",
                     "${getString(R.string.labelPower)}  ${mSensor.power} ${getString(R.string.unitAmpere)}",
-                    "${getString(R.string.labelMaxDelay)}  ${mSensor.maxDelay} ${getString(R.string.unitMicroseconds)}",
+                    "${getString(R.string.labelMaxDelay)}  $maxDelay ${getString(R.string.unitMicroseconds)}",
                     "${getString(R.string.labelMinDelay)}  ${mSensor.minDelay} ${getString(R.string.unitMicroseconds)}",
                     "${getString(R.string.labelMaxRange)}  ${mSensor.maximumRange} ${getString(R.string.unitSteps)}",
                     getString(R.string.unitSteps),
@@ -425,11 +464,14 @@ class DetailFragment : Fragment() {
         }
 
         enableLog = false
-        requireActivity().fab.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.ic_play_arrow_white_24dp))
+        requireActivity().fab.setImageResource(R.drawable.ic_play_arrow_white_24dp)
 
 
         activity!!.collapsingToolbarLayout.setBackgroundColor(ContextCompat.getColor(activity!!, R.color.colorPrimary))
-        activity!!.window.statusBarColor = ContextCompat.getColor(activity!!, R.color.colorPrimary)
+
+        if(android.os.Build.VERSION.SDK_INT >= 21)
+            activity!!.window.statusBarColor = ContextCompat.getColor(activity!!, R.color.colorPrimary)
+
         activity!!.findViewById<ImageView>(R.id.toolbarBackdrop).setImageResource(0)
         super.onDestroyView()
     }

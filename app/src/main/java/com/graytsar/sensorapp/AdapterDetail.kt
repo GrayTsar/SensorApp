@@ -1,6 +1,5 @@
 package com.graytsar.sensorapp
 
-import android.graphics.Color
 import android.hardware.Sensor
 import android.view.LayoutInflater
 import android.view.View
@@ -26,16 +25,15 @@ class AdapterDetail(private val activity:FragmentActivity):ListAdapter<ModelDeta
         holder.binding.lifecycleOwner = activity
         holder.binding.detailModel = getItem(position)
 
+
         if(getItem(position).sensorValuesCount == 1){
             holder.yValDetail.visibility = View.GONE
             holder.zValDetail.visibility = View.GONE
         }
 
-        activity.toolbarBackdrop.setImageBitmap(getItem(position).icon)
+        activity.toolbarBackdrop.setImageResource(getItem(position).icon)
 
         val toolbar =  activity.collapsingToolbarLayout
-        toolbar.setExpandedTitleColor(Color.WHITE)
-        toolbar.setCollapsedTitleTextColor(Color.WHITE)
         toolbar.title = getItem(position).title
 
         getItem(position).mChart = holder.chart
@@ -43,51 +41,64 @@ class AdapterDetail(private val activity:FragmentActivity):ListAdapter<ModelDeta
         when(getItem(position).sensor.type){
             Sensor.TYPE_ACCELEROMETER -> {
                 toolbar.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorRed))
-                activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.colorRed)
+
+                if(android.os.Build.VERSION.SDK_INT >= 21)
+                    activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.colorRed)
             }
             Sensor.TYPE_MAGNETIC_FIELD -> {
                 toolbar.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorPink))
-                activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.colorPink)
+                if(android.os.Build.VERSION.SDK_INT >= 21)
+                    activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.colorPink)
             }
             Sensor.TYPE_GRAVITY -> {
                 toolbar.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorPurple))
-                activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.colorPurple)
+                if(android.os.Build.VERSION.SDK_INT >= 21)
+                    activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.colorPurple)
             }
             Sensor.TYPE_GYROSCOPE -> {
                 toolbar.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorDeepPurple))
-                activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.colorDeepPurple)
+                if(android.os.Build.VERSION.SDK_INT >= 21)
+                    activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.colorDeepPurple)
             }
             Sensor.TYPE_LINEAR_ACCELERATION -> {
                 toolbar.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorIndigo))
-                activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.colorIndigo)
+                if(android.os.Build.VERSION.SDK_INT >= 21)
+                    activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.colorIndigo)
             }
             Sensor.TYPE_AMBIENT_TEMPERATURE -> {
                 toolbar.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorBlue))
-                activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.colorBlue)
+                if(android.os.Build.VERSION.SDK_INT >= 21)
+                    activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.colorBlue)
             }
             Sensor.TYPE_LIGHT -> {
                 toolbar.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorLightBlue))
-                activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.colorLightBlue)
+                if(android.os.Build.VERSION.SDK_INT >= 21)
+                    activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.colorLightBlue)
             }
             Sensor.TYPE_PRESSURE -> {
                 toolbar.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorCyan))
-                activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.colorCyan)
+                if(android.os.Build.VERSION.SDK_INT >= 21)
+                    activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.colorCyan)
             }
             Sensor.TYPE_RELATIVE_HUMIDITY -> {
                 toolbar.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorTeal))
-                activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.colorTeal)
+                if(android.os.Build.VERSION.SDK_INT >= 21)
+                    activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.colorTeal)
             }
             Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR -> {
                 toolbar.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorGreen))
-                activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.colorGreen)
+                if(android.os.Build.VERSION.SDK_INT >= 21)
+                    activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.colorGreen)
             }
             Sensor.TYPE_PROXIMITY -> {
                 toolbar.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorLightGreen))
-                activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.colorLightGreen)
+                if(android.os.Build.VERSION.SDK_INT >= 21)
+                    activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.colorLightGreen)
             }
             Sensor.TYPE_STEP_COUNTER -> {
                 toolbar.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorLime))
-                activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.colorLime)
+                if(android.os.Build.VERSION.SDK_INT >= 21)
+                    activity.window.statusBarColor = ContextCompat.getColor(activity, R.color.colorLime)
             }
         }
     }

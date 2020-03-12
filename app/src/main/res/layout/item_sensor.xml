@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
    <data>
@@ -11,21 +12,22 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp">
+        android:layout_marginStart="@dimen/margin_card"
+        android:layout_marginTop="@dimen/margin_card"
+        android:layout_marginEnd="@dimen/margin_card"
+        android:layout_marginBottom="@dimen/margin_card">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{modelSensor::onClick}">
+            android:onClick="@{modelSensor::onClick}"
+            android:background="@color/colorBackgroundSecondary" >
 
             <View
                 android:id="@+id/backgroundColorSensor"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@color/colorAccent"
+                android:background="@{modelSensor.backgroundColor}"
                 app:layout_constraintBottom_toBottomOf="@+id/textSensorTitle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -35,26 +37,26 @@
                 android:id="@+id/imageViewSensor"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="8dp"
+                android:contentDescription="@string/icon"
+                android:tint="@color/iconTint"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:contentDescription="@string/icon" />
+                app:srcCompat="@{modelSensor.icon}" />
 
             <TextView
                 android:id="@+id/textSensorTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="@dimen/margin_text_horizontal"
+                android:layout_marginTop="@dimen/margin_text_vertical"
+                android:layout_marginEnd="@dimen/margin_text_horizontal"
                 android:text="@{modelSensor.title}"
-                android:textColor="@color/iconTint"
+                android:textColor="@color/textColorTitle"
                 android:textSize="22sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/textSensorVal1"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/backgroundColorSensor"
                 app:layout_constraintTop_toBottomOf="@+id/imageViewSensor" />
 
@@ -62,15 +64,14 @@
                 android:id="@+id/textSensorVal1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:gravity="center_horizontal"
+                android:layout_marginStart="@dimen/margin_text_horizontal"
+                android:layout_marginTop="@dimen/margin_text_vertical"
+                android:layout_marginEnd="@dimen/margin_text_horizontal"
+                android:layout_marginBottom="@dimen/margin_text_vertical"
                 android:text="@{modelSensor.xValue}"
-                android:textColor="@color/textColor"
-                android:textSize="18sp"
+                android:theme="@style/text_sensor_normal_style"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/backgroundColorSensor"
                 app:layout_constraintVertical_bias="0.0" />
@@ -79,12 +80,12 @@
                 android:id="@+id/textSensorVal2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center_horizontal"
+                android:layout_marginStart="@dimen/margin_text_horizontal"
+                android:layout_marginTop="@dimen/margin_text_vertical"
+                android:layout_marginEnd="@dimen/margin_text_horizontal"
                 android:text="@{modelSensor.yValue}"
-                android:textSize="18sp"
+                android:theme="@style/text_sensor_normal_style"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textSensorVal1" />
 
@@ -92,14 +93,14 @@
                 android:id="@+id/textSensorVal3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="4dp"
-                android:gravity="center_horizontal"
+                android:layout_marginStart="@dimen/margin_text_horizontal"
+                android:layout_marginTop="@dimen/margin_text_vertical"
+                android:layout_marginEnd="@dimen/margin_text_horizontal"
+                android:layout_marginBottom="@dimen/margin_text_vertical"
                 android:text="@{modelSensor.zValue}"
-                android:textSize="18sp"
+                android:theme="@style/text_sensor_normal_style"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textSensorVal2" />
 

@@ -3,8 +3,14 @@
     <color name="colorPrimary">#388e3c</color>
     <color name="colorPrimaryDark">#388e3c</color>
     <color name="colorAccent">#ff1744</color>
-    <color name="textColor">@android:color/secondary_text_light</color>
-    <color name="iconTint">#FFFFFF</color>
+    <color name="textColor">#212121</color>
+    <color name="textColorTitle">#fafafa</color>
+    <color name="iconTint">#fafafa</color>
+    <color name="colorDrawerTint">#fafafa</color>
+    <color name="colorDetailIconTint">#212121</color>
+
+    <color name="colorBackgroundPrimary">#FFFFFF</color>
+    <color name="colorBackgroundSecondary">#FAFAFA</color>
 
     <color name="colorRed">#e53935</color>
     <color name="colorPink">#d81b60</color>

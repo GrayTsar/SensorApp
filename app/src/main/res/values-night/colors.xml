@@ -3,8 +3,14 @@
     <color name="colorPrimary">#388e3c</color>
     <color name="colorPrimaryDark">#388e3c</color>
     <color name="colorAccent">#ff1744</color>
-    <color name="textColor">#f2e4f4</color>
-    <color name="iconTint">#f2e4f4</color>
+    <color name="textColor">#fafafa</color>
+    <color name="textColorTitle">#fafafa</color>
+    <color name="iconTint">#fafafa</color>
+    <color name="colorDrawerTint">#212121</color>
+    <color name="colorDetailIconTint">#fafafa</color>
+
+    <color name="colorBackgroundPrimary">#000000</color>
+    <color name="colorBackgroundSecondary">#212121</color>
 
     <color name="colorRed">#e53935</color>
     <color name="colorPink">#d81b60</color>

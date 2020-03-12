@@ -1,20 +1,41 @@
 <resources>
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="AppThemeLight" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textColorPrimary">@color/textColorTitle</item>
         <item name="drawerArrowStyle">@style/ArrowHamburgerStyle</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
+    <style name="AppThemeLight.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorControlNormal">@android:color/white</item>
     </style>
 
     <style name="ArrowHamburgerStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
-        <item name="color">@color/iconTint</item>
+        <item name="color">@color/colorDrawerTint</item>
+    </style>
+
+    <style name="text_sensor_normal_style" parent="@style/Widget.AppCompat.TextView">
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/textColor</item>
+    </style>
+
+    <style name="text_detail_normal_style" parent="@style/Widget.AppCompat.TextView">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/textColor</item>
+    </style>
+
+    <style name="text_detail_header_style" parent="@style/Widget.AppCompat.TextView">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="icon_detail_normal_style">
+        <item name="tint">@color/colorDetailIconTint</item>
     </style>
 </resources>
