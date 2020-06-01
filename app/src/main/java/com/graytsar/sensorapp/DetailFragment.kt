@@ -57,7 +57,7 @@ class DetailFragment : Fragment() {
         }
 
         sensorManager = requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        sensorType = arguments!!.getInt("typeSensor")
+        sensorType = requireArguments().getInt("typeSensor")
     }
 
     override fun onCreateView(

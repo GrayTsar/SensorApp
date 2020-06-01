@@ -57,7 +57,7 @@ class ForegroundServiceWriteFile: Service() {
                 setChannelId(channelID)
             }
 
-            notification.setProgress(1000000, 0, false)
+            notification.setProgress(100, 0, false)
 
             if(sensorValuesCount == 1){
                 val pfd: ParcelFileDescriptor = applicationContext.contentResolver.openFileDescriptor(fUri, "w")!!

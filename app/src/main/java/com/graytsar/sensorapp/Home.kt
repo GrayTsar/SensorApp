@@ -80,10 +80,10 @@ class Home : Fragment(), NavigationView.OnNavigationItemSelectedListener {
 
         adapter = AdapterSensor(requireActivity())
 
-        val navigationView:NavigationView = activity!!.findViewById(R.id.navigation_view)
+        val navigationView:NavigationView = requireActivity().findViewById(R.id.navigation_view)
         navigationView.setNavigationItemSelectedListener(this)
 
-        sensorManager = context!!.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        sensorManager = requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager
         view.recyclerHome.layoutManager = LinearLayoutManager(context)
         view.recyclerHome.adapter = adapter
 
@@ -96,80 +96,80 @@ class Home : Fragment(), NavigationView.OnNavigationItemSelectedListener {
     private fun initLayout(){
         typeList.forEach{
             val mSensor = sensorManager.getDefaultSensor(it)
-            val f = activity!!.supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+            val f = requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
             val navController: NavController = f.navController //for fragment switch
 
             if(mSensor != null){
                 when (mSensor.type) {
                     Sensor.TYPE_ACCELEROMETER -> {
-                        val model = ModelSensor(mSensor, getString(R.string.sensorAccelerometer), R.drawable.ic_acceleration_white, 3, getString(R.string.unitAcceleration), ContextCompat.getColor(activity!!, R.color.colorRed), sensorManager, navController)
+                        val model = ModelSensor(mSensor, getString(R.string.sensorAccelerometer), R.drawable.ic_acceleration_white, 3, getString(R.string.unitAcceleration), ContextCompat.getColor(requireActivity(), R.color.colorRed), sensorManager, navController)
                         list.add(model)
                         //set background color in adapter
 
                         //arListSensorEventListener.add(model.registerSensor())
                     }
                     Sensor.TYPE_MAGNETIC_FIELD -> {
-                        val model = ModelSensor(mSensor, getString(R.string.sensorMagneticField), R.drawable.ic_magnet_white, 3, getString(R.string.unitMagneticField), ContextCompat.getColor(activity!!, R.color.colorPink), sensorManager, navController)
+                        val model = ModelSensor(mSensor, getString(R.string.sensorMagneticField), R.drawable.ic_magnet_white, 3, getString(R.string.unitMagneticField), ContextCompat.getColor(requireActivity(), R.color.colorPink), sensorManager, navController)
                         list.add(model)
 
                         //arListSensorEventListener.add(model.registerSensor())
                     }
                     Sensor.TYPE_GRAVITY -> {
-                        val model = ModelSensor(mSensor, getString(R.string.sensorGravity), R.drawable.ic_gravity_white, 3, getString(R.string.unitAcceleration), ContextCompat.getColor(activity!!, R.color.colorPurple), sensorManager, navController)
+                        val model = ModelSensor(mSensor, getString(R.string.sensorGravity), R.drawable.ic_gravity_white, 3, getString(R.string.unitAcceleration), ContextCompat.getColor(requireActivity(), R.color.colorPurple), sensorManager, navController)
                         list.add(model)
 
                         //arListSensorEventListener.add(model.registerSensor())
                     }
                     Sensor.TYPE_GYROSCOPE -> {
-                        val model = ModelSensor(mSensor, getString(R.string.sensorGyroscope), R.drawable.ic_gyroscope_white, 3, getString(R.string.unitRadiantSecond), ContextCompat.getColor(activity!!, R.color.colorDeepPurple), sensorManager, navController)
+                        val model = ModelSensor(mSensor, getString(R.string.sensorGyroscope), R.drawable.ic_gyroscope_white, 3, getString(R.string.unitRadiantSecond), ContextCompat.getColor(requireActivity(), R.color.colorDeepPurple), sensorManager, navController)
                         list.add(model)
 
                         //arListSensorEventListener.add(model.registerSensor())
                     }
                     Sensor.TYPE_LINEAR_ACCELERATION -> {
-                        val model = ModelSensor(mSensor, getString(R.string.sensorLinearAcceleration), R.drawable.ic_linearacceleration_white,3, getString(R.string.unitAcceleration), ContextCompat.getColor(activity!!, R.color.colorIndigo), sensorManager, navController)
+                        val model = ModelSensor(mSensor, getString(R.string.sensorLinearAcceleration), R.drawable.ic_linearacceleration_white,3, getString(R.string.unitAcceleration), ContextCompat.getColor(requireActivity(), R.color.colorIndigo), sensorManager, navController)
                         list.add(model)
 
                         //arListSensorEventListener.add(model.registerSensor())
                     }
                     Sensor.TYPE_AMBIENT_TEMPERATURE -> {
-                        val model = ModelSensor(mSensor, getString(R.string.sensorAmbientTemperature), R.drawable.ic_temperature_white, 1, getString(R.string.unitTemperature), ContextCompat.getColor(activity!!, R.color.colorBlue), sensorManager, navController)
+                        val model = ModelSensor(mSensor, getString(R.string.sensorAmbientTemperature), R.drawable.ic_temperature_white, 1, getString(R.string.unitTemperature), ContextCompat.getColor(requireActivity(), R.color.colorBlue), sensorManager, navController)
                         list.add(model)
 
                         //arListSensorEventListener.add(model.registerSensor())
                     }
                     Sensor.TYPE_LIGHT -> {
-                        val model = ModelSensor(mSensor, getString(R.string.sensorLight), R.drawable.ic_light_white, 1, getString(R.string.unitLight), ContextCompat.getColor(activity!!, R.color.colorLightBlue), sensorManager, navController)
+                        val model = ModelSensor(mSensor, getString(R.string.sensorLight), R.drawable.ic_light_white, 1, getString(R.string.unitLight), ContextCompat.getColor(requireActivity(), R.color.colorLightBlue), sensorManager, navController)
                         list.add(model)
 
                         //arListSensorEventListener.add(model.registerSensor())
                     }
                     Sensor.TYPE_PRESSURE -> {
-                        val model = ModelSensor(mSensor, getString(R.string.sensorPressure), R.drawable.ic_pressure_white,1, getString(R.string.unitPressure), ContextCompat.getColor(activity!!, R.color.colorCyan), sensorManager, navController)
+                        val model = ModelSensor(mSensor, getString(R.string.sensorPressure), R.drawable.ic_pressure_white,1, getString(R.string.unitPressure), ContextCompat.getColor(requireActivity(), R.color.colorCyan), sensorManager, navController)
                         list.add(model)
 
                         //arListSensorEventListener.add(model.registerSensor())
                     }
                     Sensor.TYPE_RELATIVE_HUMIDITY -> {
-                        val model = ModelSensor(mSensor, getString(R.string.sensorRelativeHumidity), R.drawable.ic_humidity_white,1, getString(R.string.unitPercent), ContextCompat.getColor(activity!!, R.color.colorTeal), sensorManager, navController)
+                        val model = ModelSensor(mSensor, getString(R.string.sensorRelativeHumidity), R.drawable.ic_humidity_white,1, getString(R.string.unitPercent), ContextCompat.getColor(requireActivity(), R.color.colorTeal), sensorManager, navController)
                         list.add(model)
 
                         //arListSensorEventListener.add(model.registerSensor())
                     }
                     Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR -> {
-                        val model = ModelSensor(mSensor, getString(R.string.sensorGeomagneticRotationVector), R.drawable.ic_rotate_white,3, "", ContextCompat.getColor(activity!!, R.color.colorGreen), sensorManager, navController)
+                        val model = ModelSensor(mSensor, getString(R.string.sensorGeomagneticRotationVector), R.drawable.ic_rotate_white,3, "", ContextCompat.getColor(requireActivity(), R.color.colorGreen), sensorManager, navController)
                         list.add(model)
 
                         //arListSensorEventListener.add(model.registerSensor())
                     }
                     Sensor.TYPE_PROXIMITY -> {
-                        val model = ModelSensor(mSensor, getString(R.string.sensorProximity), R.drawable.ic_proximity_white, 1, getString(R.string.unitProximity), ContextCompat.getColor(activity!!, R.color.colorLightGreen), sensorManager, navController)
+                        val model = ModelSensor(mSensor, getString(R.string.sensorProximity), R.drawable.ic_proximity_white, 1, getString(R.string.unitProximity), ContextCompat.getColor(requireActivity(), R.color.colorLightGreen), sensorManager, navController)
                         list.add(model)
 
                         //arListSensorEventListener.add(model.registerSensor())
                     }
                     Sensor.TYPE_STEP_COUNTER -> {
-                        val model = ModelSensor(mSensor, getString(R.string.sensorStepCounter), R.drawable.ic_steps_white, 1, getString(R.string.unitSteps), ContextCompat.getColor(activity!!, R.color.colorLime), sensorManager, navController)
+                        val model = ModelSensor(mSensor, getString(R.string.sensorStepCounter), R.drawable.ic_steps_white, 1, getString(R.string.unitSteps), ContextCompat.getColor(requireActivity(), R.color.colorLime), sensorManager, navController)
                         list.add(model)
 
                         //arListSensorEventListener.add(model.registerSensor())
@@ -263,11 +263,11 @@ class Home : Fragment(), NavigationView.OnNavigationItemSelectedListener {
 
     //drawer layout menu clicked
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
-        val f = activity!!.supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val f = requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController:NavController = f.navController //for fragment switch
-        val sensorManager = activity!!.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        val sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
-        val d = activity!!.findViewById<DrawerLayout>(R.id.drawer_layout).drawer_layout
+        val d = requireActivity().findViewById<DrawerLayout>(R.id.drawer_layout).drawer_layout
 
         when(p0.itemId){
             R.id.home ->{
